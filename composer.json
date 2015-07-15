@@ -1,0 +1,13 @@
+{
+    "name": "focalworks/users",
+    "description": "This is user management module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Focalworks",
+            "email": "sneha.chavan@focalworks.in"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
