@@ -1,11 +1,16 @@
-@extends('master.layout')
-
-@section('title', '<h2>Welcome '.$user->name.'</h2>')
+@if ($layout)
+    @extends($layout)
+@endif
 
 @section('content')
-<div class="col-md-9" role="main">
-<div class="pull-right">{!! HTML::link('users/logout', 'Logout', array('class' => 'btn btn-link')) !!}</div>
 
+@include('users::menubar')
+
+<h2>Welcome {!! strtoupper($user->name) !!}</h2>
+<hr/>
+
+<div class="col-md-9" role="main">
+<div class="clearfix"></div>
 @if(Session::has('error'))
     <div class="alert alert-danger">{!! Session::get('error') !!}</div>
 @endif
@@ -22,6 +27,14 @@
  	<tr>
  		<th>Email</th>
  		<td>{!! $user->email !!}</td>
+ 	</tr>
+ 	<tr>
+ 		<th>Roles</th>
+ 		<td>
+ 		@foreach ($user_roles as $user_role)
+    		<p> {!! $user_role->roles->role !!}</p>
+		@endforeach
+		</td>
  	</tr>
 </table>
 @endsection
