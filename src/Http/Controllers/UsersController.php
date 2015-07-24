@@ -43,7 +43,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Register page
+     * User registration page
      *
      * @return void
      */
