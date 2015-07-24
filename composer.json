@@ -8,6 +8,16 @@
             "email": "sneha.chavan@focalworks.in"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Focalworks\\Users\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "illuminate/support": "~5"
+    }
 }

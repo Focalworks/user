@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b2c4ba604d30caacf9df7764f2a8ec9",
+    "hash": "5a55f2b8f60794a10f59fb79981a2330",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -135,12 +135,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "fe02ee7d6aeb498a9462366887f9cc797f5e7abf"
+                "reference": "0bf2ac25a73c40b2d401fc7db58f6b0788ccc312"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/fe02ee7d6aeb498a9462366887f9cc797f5e7abf",
-                "reference": "fe02ee7d6aeb498a9462366887f9cc797f5e7abf",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/0bf2ac25a73c40b2d401fc7db58f6b0788ccc312",
+                "reference": "0bf2ac25a73c40b2d401fc7db58f6b0788ccc312",
                 "shasum": ""
             },
             "require": {
@@ -169,7 +169,7 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "http://laravel.com",
-            "time": "2015-07-13 12:53:40"
+            "time": "2015-07-17 14:40:14"
         },
         {
             "name": "illuminate/support",
@@ -177,12 +177,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "d4e67b89b789dbcce4dba1724797ebbc37bd0793"
+                "reference": "0caf4c9216b00aa1172b07f67a92ff42421d8630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/d4e67b89b789dbcce4dba1724797ebbc37bd0793",
-                "reference": "d4e67b89b789dbcce4dba1724797ebbc37bd0793",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/0caf4c9216b00aa1172b07f67a92ff42421d8630",
+                "reference": "0caf4c9216b00aa1172b07f67a92ff42421d8630",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +194,7 @@
             },
             "suggest": {
                 "jeremeamia/superclosure": "Required to be able to serialize closures (~2.0).",
-                "symfony/var-dumper": "Required to use the dd function (2.8.*)."
+                "symfony/var-dumper": "Required to use the dd function (3.0.*)."
             },
             "type": "library",
             "extra": {
@@ -222,7 +222,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2015-07-12 02:28:00"
+            "time": "2015-07-18 02:58:46"
         }
     ],
     "packages-dev": [],

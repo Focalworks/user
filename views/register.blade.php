@@ -1,8 +1,12 @@
-@extends('master.layout')
-
-@section('title', '<h2>Register User</h2>')
+@if ($layout)
+    @extends($layout)
+@endif
 
 @section('content')
+
+<h2>Registration Page</h2>
+<hr/>
+
 <div class="col-md-9" role="main">
 
 @if(Session::has('error'))

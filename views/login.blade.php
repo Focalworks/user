@@ -1,10 +1,13 @@
-@extends('master.layout')
-
-@section('title', '<h2>Login Page</h2>')
+@if ($layout)
+    @extends($layout)
+@endif
 
 @section('content')
-<div class="col-md-9" role="main">
 
+<h2>Login Page</h2>
+<hr/>
+
+<div class="col-md-9" role="main">
 @if(Session::has('error'))
     <div class="alert alert-danger">{!! Session::get('error') !!}</div>
 @endif
