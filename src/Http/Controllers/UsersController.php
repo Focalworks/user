@@ -8,6 +8,7 @@ use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -17,16 +18,17 @@ use Illuminate\Support\Facades\Validator;
 class UsersController extends Controller
 {
     /*callback function after successfull login */
-    protected $login_redirect = 'dashboard';
+    protected $login_redirect = 'users/dashboard';
 
     /*master layout page */
-    protected $layout = null;
+    protected $layout = '';
 
     /**
      * This is the constructor for the Controller
      */
     public function __construct()
     {
+        dd(Config::get('user.login_redirect'));
         // set which methods will be authenticated
         // and which are not
         $this->middleware('auth', [
@@ -38,6 +40,7 @@ class UsersController extends Controller
         }
 
         if (!empty(config('user.master_layout_page'))) {
+
             $this->layout = config('user.master_layout_page');
         }
     }
@@ -88,7 +91,7 @@ class UsersController extends Controller
                 Session::flash('error', 'Registration failed..please try again later');
                 return Redirect::to('users/register');
             } else {
-                UserRoles::create(array('uid' => $user->id, 'rid' => 3));
+                UserRoles::create(array('uid' => $user->id, 'rid' => 2));
             }
 
         }

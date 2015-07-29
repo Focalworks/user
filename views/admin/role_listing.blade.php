@@ -3,56 +3,50 @@
 @endif
 
 @section('content')
+    <div class="row">
+        <div class="col-md-10 well col-md-push-1" role="main">
+            @include('users::menubar')
 
-@include('users::menubar')
+            <h2>All Roles</h2>
 
-<h2>All Roles</h2>
-<hr/>
+            <div class="pull-right"><a href="{{ url('admin/addRole/') }}" class="btn btn-link" title="Edit User"><span class="glyphicon glyphicon-plus"></span> Add New Role</a></div>
+            @if(Session::has('error'))
+                <div class="alert alert-danger">{!! Session::get('error') !!}</div>
+            @endif
 
-<div class="col-md-12" role="main">
-<div class="pull-right">{!! HTML::link('admin/addRole', 'Add New Role', array('class' => 'btn btn-link')) !!}</div>
-@if(Session::has('error'))
-    <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-@endif
+            @if(Session::has('success'))
+                <div class="alert alert-success">{!! Session::get('success') !!}</div>
+            @endif
 
-@if(Session::has('success'))
-    <div class="alert alert-success">{!! Session::get('success') !!}</div>
-@endif
-
-<table id="usertbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>Sr.No.</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if ($roles)
-            <?php $index = 1; ?>
-                @foreach ($roles as $role)
-                     <tr>
-                        <td>{!! $index !!}</td>
-                        <td>{!! $role->role !!}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Actions
-                                  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                  <li>{!! HTML::link('admin/editRole/'.$role->rid, 'Edit Role', array('class' => 'btn btn-link')) !!}</li>
-                                  @if ($role->rid != 1)
-                                  <li>{!! HTML::link('admin/deleteRole/'.$role->rid, 'Delete Role', array('class' => 'btn btn-link')) !!}</li>
-                                  @endif
-                                </ul>
-                             </div>
-                        </td>
-                     </tr>
-                     <?php $index++; ?>
-                @endforeach
-             @endif
-        </tbody>
-</table>
-</div>
+            <table id="roletbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($roles)
+                    <?php $index = 1; ?>
+                        @foreach ($roles as $role)
+                            <tr>
+                                <td>{!! $index !!}</td>
+                                <td>{!! $role->role !!}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ url('admin/editRole/'.$role->rid) }}" class="btn btn-link" title="Edit Role"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        @if ($role->rid != 1 && $role->rid != 2)
+                                        <a href="{{ url('admin/deleteRole/'.$role->rid) }}" class="btn btn-link" title="Delete Role" onclick="return confirm('Do you really want to delete this role?')"><span class="glyphicon glyphicon-trash"></span></a>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php $index++; ?>
+                       @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection

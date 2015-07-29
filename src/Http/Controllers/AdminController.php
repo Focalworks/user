@@ -3,7 +3,7 @@
 namespace Focalworks\Users\Http\Controllers;
 
 use Focalworks\Users\PermissionMatrix;
-use Focalworks\Users\UserPermissions;
+use Focalworks\Users\RolePermissions;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     /*master layout page */
-    protected $layout = null;
+    protected $layout = '';
 
     /**
      * This is the constructor for the Controller
@@ -196,12 +196,12 @@ class AdminController extends Controller
      */
     public function savePermissionMatrix(Request $request)
     {
-        UserPermissions::truncate();
+        RolePermissions::truncate();
         $permission_matrix = $request->input('pm');
         if (count($permission_matrix) > 0) {
             foreach ($permission_matrix as $permission) {
                 $piece = explode('_', $permission);
-                UserPermissions::create(array('pid' => $piece[0], 'rid' => $piece[1]));
+                RolePermissions::create(array('pid' => $piece[0], 'rid' => $piece[1]));
             }
         }
         Session::flash('success', 'Permission Matrix Saved successfully.');
@@ -217,6 +217,85 @@ class AdminController extends Controller
         $roles = Roles::all();
         return view('users::admin.role_listing')
             ->with('roles', $roles)
+            ->with('layout', $this->layout);
+    }
+
+
+    /**
+     * This is function to edit role
+     **/
+    public function editRole($id)
+    {
+        $role = Roles::GetByRoleID($role_id)->first();
+        if ($role) {
+            return view('users::admin.edit-role')
+                ->with('role', $role)
+                ->with('layout', $this->layout);
+        } else {
+            Session::flash('error', 'This Role not exist.');
+            return redirect()->back();
+        }
+    }
+
+
+    /**
+     * This is function to save role changes
+     **/
+
+    public function saveRole(Request $request)
+    {
+        $fields = array(
+            'role' => Input::get('role')
+        );
+        $rules = array('role' => 'required|min:2');
+        $validator = Validator::make($fields, $rules);
+
+        if ($validator->fails()) {
+            // send back to the page with the input data and errors
+            return redirect()->back()->withInput()->withErrors($validator);
+        } else {
+            $role_id = $request->input('rid');
+            if ($role_id) {
+                $role = Roles::GetByRoleID($role_id)->first();
+                // change password and send back
+                $role->role = $request->input('role');
+                $role->save();
+                Session::flash('success', 'Role changes saved successfully.');
+            } else {
+                Roles::create([
+                    'role' => $request->input('role')
+                ]);
+                Session::flash('success', 'Role created successfully.');
+            }
+            return redirect('admin/roleListing');
+        }
+    }
+
+    /**
+     * This function is to delete role
+     */
+    public function deleteRole($role_id)
+    {
+        $role = Roles::GetByRoleID($role_id)->first();
+
+        if ($role) {
+            $user_roles = new UserRoles();
+            $user_roles->where('rid', '=', $role_id)->delete();
+            $role->delete();
+            Session::flash('success', 'Role deleted successfully.');
+            return redirect()->back();
+        } else {
+            Session::flash('error', 'This Role not exist.');
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * this function is used to add new role
+     */
+    public function addRole()
+    {
+        return view('users::admin.add-role')
             ->with('layout', $this->layout);
     }
 

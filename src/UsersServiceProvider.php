@@ -33,7 +33,7 @@ class UsersServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/2015_07_16_200000_create_roles_table.php' => base_path('database/migrations/2015_07_16_000000_create_roles_table.php'),
             __DIR__ . '/../database/migrations/2015_07_16_100000_create_permissions_table.php' => base_path('database/migrations/2015_07_16_000000_create_permissions_table.php'),
             __DIR__ . '/../database/migrations/2015_07_16_400000_create_user_roles_table.php' => base_path('database/migrations/2015_07_16_000000_create_user_roles_table.php'),
-            __DIR__ . '/../database/migrations/2015_07_16_300000_create_user_permissions_table.php' => base_path('database/migrations/2015_07_16_000000_create_user_permissions_table.php'),
+            __DIR__ . '/../database/migrations/2015_07_16_300000_create_role_permissions_table.php' => base_path('database/migrations/2015_07_16_000000_create_user_permissions_table.php'),
 
             //copy package seeds into application's seeds
 

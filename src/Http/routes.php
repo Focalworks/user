@@ -22,3 +22,7 @@ Route::post('admin/saveUserPassword', 'Focalworks\Users\Http\Controllers\AdminCo
 Route::get('admin/permissionMatrix', 'Focalworks\Users\Http\Controllers\AdminController@getPermissionMatrix');
 Route::post('admin/permissionMatrix', 'Focalworks\Users\Http\Controllers\AdminController@savePermissionMatrix');
 Route::get('admin/roleListing', 'Focalworks\Users\Http\Controllers\AdminController@role_listing');
+Route::get('admin/editRole/{id}', 'Focalworks\Users\Http\Controllers\AdminController@editRole');
+Route::post('admin/saveRole', 'Focalworks\Users\Http\Controllers\AdminController@saveRole');
+Route::get('admin/deleteRole/{id}', 'Focalworks\Users\Http\Controllers\AdminController@deleteRole');
+Route::get('admin/addRole', 'Focalworks\Users\Http\Controllers\AdminController@addRole');

@@ -14,8 +14,16 @@ class Roles extends Model
      */
     protected $fillable = ['role'];
 
+    protected $primaryKey = 'rid';
+
+    public static function GetByRoleID($id)
+    {
+        return SELF::where('rid', '=', $id);
+    }
+
+
     public function role_permissions()
     {
-        return $this->hasMany('Focalworks\Users\UserPermissions', 'rid', 'rid');
+        return $this->hasMany('Focalworks\Users\RolePermissions', 'rid', 'rid');
     }
 }

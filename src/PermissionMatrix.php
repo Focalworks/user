@@ -47,10 +47,10 @@ class PermissionMatrix
         $current_user_roles = User::find($user_id)->user_roles()->get();
         foreach ($current_user_roles as $role) {
             /* all permissions of each role of user */
-            $user_permissions = $role->user_permissions()->get();
-            foreach ($user_permissions as $user_permission) {
+            $role_permissions = $role->role_permissions()->get();
+            foreach ($role_permissions as $role_permission) {
                 /*get permission name of each permission */
-                $all_permissions[] = $user_permission->permissions->name;
+                $all_permissions[] = $role_permission->permissions->name;
             }
         }
 

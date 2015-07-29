@@ -3,57 +3,65 @@
 @endif
 
 @section('content')
+    <div class="row">
+        <div class="col-md-9 well col-md-push-2" role="main">
+        <h2>User Registration</h2>
+        <br/>
+            @if(Session::has('error'))
+                <div class="alert alert-danger">{!! Session::get('error') !!}</div>
+            @endif
 
-<h2>Registration Page</h2>
-<hr/>
+            @if(Session::has('success'))
+                <div class="alert alert-success">{!! Session::get('success') !!}</div>
+            @endif
 
-<div class="col-md-9" role="main">
+            <form action="{{ url('users/register')  }}" method="POST" class="form-horizontal">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Display Name</label>
 
-@if(Session::has('error'))
-    <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-@endif
+                    <div class="col-sm-6">
+                        <input type="text" name="name" class="form-control" placeholder="Enter your display name" value="{{ Input::old('name') }}">
 
-    {!! Form::open(array('url' => 'users/register','class' => 'form-horizontal')) !!}
+                        <p class="text-danger">{!! $errors->first('name') !!}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Email</label>
 
-    <div class="form-group">
-    <label for="name" class="col-sm-2 control-label">Display Name</label>
-    <div class="col-sm-6">
-    {!! Form::text('name','',array('class' => 'form-control','placeholder' => 'Display Name')) !!}
-    <p class="text-danger">{!! $errors->first('name') !!}</p>
+                    <div class="col-sm-6">
+                        <input type="text" name="email" class="form-control" placeholder="Enter your email" value="{{ Input::old('email') }}">
+
+                        <p class="text-danger">{!! $errors->first('email') !!}</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Password</label>
+
+                    <div class="col-sm-6">
+                        <input type="password" name="password" class="form-control" placeholder="Enter your password">
+
+                        <p class="text-danger">{!! $errors->first('password') !!}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Confirm Password</label>
+
+                    <div class="col-sm-6">
+                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm your password">
+
+                        <p class="text-danger">{!! $errors->first('password_confirmation') !!}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-primary">Register</button>
+                        <a href="{{ url('users/login')  }}" class="btn btn-link">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="email" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-6">
-    {!! Form::email('email','',array('class' => 'form-control','placeholder' => 'Email')) !!}
-     <p class="text-danger">{!! $errors->first('email') !!}</p>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="password" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-6">
-    {!! Form::password('password',array('class' => 'form-control','placeholder' => 'Password')) !!}
-    <p class="text-danger">{!! $errors->first('password') !!}</p>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="name" class="col-sm-2 control-label">Confirm Password</label>
-    <div class="col-sm-6">
-    {!! Form::password('password_confirmation',array('class' => 'form-control','placeholder' => 'Confirm Password')) !!}
-     <p class="text-danger">{!! $errors->first('password_confirmation') !!}</p>
-    </div>
-  </div>
-
-    <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      {!! Form::submit('Register',array('class' => 'btn btn-primary')) !!}
-      {!! HTML::link('users/login', 'Cancel', array('class' => 'btn btn-default')) !!}
-    </div>
-  </div>
-    
-    {!! Form::close() !!}
-    
-</div>
 @endsection
-
 

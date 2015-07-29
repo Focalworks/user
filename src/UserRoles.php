@@ -20,8 +20,8 @@ class UserRoles extends Model
         return $this->hasOne('Focalworks\Users\Roles', 'rid', 'rid');
     }
 
-    public function user_permissions()
+    public function role_permissions()
     {
-        return $this->hasMany('Focalworks\Users\UserPermissions', 'rid', 'rid');
+        return $this->hasMany('Focalworks\Users\RolePermissions', 'rid', 'rid');
     }
 }
