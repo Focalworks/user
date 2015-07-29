@@ -7,6 +7,7 @@
                     <ul class="nav navbar-nav">
                         <li ><a href="{{ url('admin/userListing')  }}" class="btn btn-link">All Users</a></li>
                         <li ><a href="{{ url('admin/roleListing')  }}" class="btn btn-link">All Roles</a></li>
+                        <li ><a href="{{ url('admin/permissionsListing')  }}" class="btn btn-link">Permissions</a></li>
                         <li class=""><a href="{{ url('admin/permissionMatrix')  }}" class="btn btn-link">Permission Matrix</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

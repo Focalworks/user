@@ -28,7 +28,6 @@ class UsersController extends Controller
      */
     public function __construct()
     {
-        dd(Config::get('user.login_redirect'));
         // set which methods will be authenticated
         // and which are not
         $this->middleware('auth', [

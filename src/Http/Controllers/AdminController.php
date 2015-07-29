@@ -3,6 +3,7 @@
 namespace Focalworks\Users\Http\Controllers;
 
 use Focalworks\Users\PermissionMatrix;
+use Focalworks\Users\Permissions;
 use Focalworks\Users\RolePermissions;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
@@ -299,5 +300,72 @@ class AdminController extends Controller
             ->with('layout', $this->layout);
     }
 
+    /**
+     * This function gives list of all permissions
+     *
+     */
+    public function permissionsListing()
+    {
+        $permissions = Permissions::all();
+        return view('users::admin.permissions-listing')
+            ->with('permissions', $permissions)
+            ->with('layout', $this->layout);
+    }
 
+    /**
+     * This will delete permission
+     *
+     */
+    public function deletePermission()
+    {
+        $permissions = Permissions::all();
+        return view('users::admin.permissions-listing')
+            ->with('permissions', $permissions)
+            ->with('layout', $this->layout);
+    }
+
+    /**
+     * This will display add permission
+     *
+     */
+    public function addPermission()
+    {
+        $permissions = Permissions::all();
+        return view('users::admin.add-permission')
+            ->with('layout', $this->layout);
+    }
+
+    /**
+     * This will display edit permission
+     *
+     */
+    public function editPermission($id)
+    {
+        $permission = Permissions::find($id);
+        return view('users::admin.edit-permission')
+            ->with('permission', $permission)
+            ->with('layout', $this->layout);
+    }
+
+    /**
+     * This will display add permission
+     *
+     */
+    public function savePermission(Request $request)
+    {
+//        $permissions = Permissions();
+//        $permissions->create($request->all());
+        return redirect('admin/permissionsListing');
+    }
+
+    /**
+     * This will display edit permission
+     *
+     */
+    public function updatePermission(Request $request)
+    {
+        $permissions = Permissions::find($request->input('pid'));
+        $permissions->update($request->all());
+        return redirect('admin/permissionsListing');
+    }
 }
