@@ -30,3 +30,12 @@ Route::get('admin/editRole/{id}', 'Focalworks\Users\Http\Controllers\AdminContro
 Route::post('admin/saveRole', 'Focalworks\Users\Http\Controllers\AdminController@saveRole');
 Route::get('admin/deleteRole/{id}', 'Focalworks\Users\Http\Controllers\AdminController@deleteRole');
 Route::get('admin/addRole', 'Focalworks\Users\Http\Controllers\AdminController@addRole');
+
+/*Routes relate to permissions*/
+Route::get('admin/permissionsListing', 'Focalworks\Users\Http\Controllers\AdminController@permissionsListing');
+Route::get('admin/editPermission/{id}', 'Focalworks\Users\Http\Controllers\AdminController@editPermission');
+Route::get('admin/addPermission', 'Focalworks\Users\Http\Controllers\AdminController@addPermission');
+
+Route::post('admin/editPermission', 'Focalworks\Users\Http\Controllers\AdminController@updatePermission');
+Route::get('admin/deletePermission/{id}', 'Focalworks\Users\Http\Controllers\AdminController@deletePermission');
+Route::post('admin/addPermission', 'Focalworks\Users\Http\Controllers\AdminController@savePermission');

@@ -2,7 +2,9 @@
 
 namespace Focalworks\Users\Http\Controllers;
 
+use Focalworks\Users\Http\Requests\CreatePermissionRequest;
 use Focalworks\Users\PermissionMatrix;
+use Focalworks\Users\Permissions;
 use Focalworks\Users\RolePermissions;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
@@ -359,5 +361,75 @@ class AdminController extends Controller
             ->with('layout', $this->layout);
     }
 
+    /**
+     * This function gives list of all permissions
+     *
+     */
+    public function permissionsListing()
+    {
+        $permissions = Permissions::all();
+        return view('users::admin.permissions-listing')
+            ->with('permissions', $permissions)
+            ->with('layout', $this->layout);
+    }
 
+    /**
+     * This will delete permission
+     *
+     */
+    public function deletePermission($id)
+    {
+        $permission = Permissions::find($id);
+        if ($permission) {
+            $permissionObj = new Permissions();
+            $permissionObj->where('pid', $id)->delete();
+        }
+        return redirect('admin/permissionsListing');
+    }
+
+    /**
+     * This will display add permission
+     *
+     */
+    public function addPermission()
+    {
+        $permissions = Permissions::all();
+        return view('users::admin.add-permission')
+            ->with('layout', $this->layout);
+    }
+
+    /**
+     * This will display edit permission
+     *
+     */
+    public function editPermission($id)
+    {
+        $permission = Permissions::find($id);
+        return view('users::admin.edit-permission')
+            ->with('permission', $permission)
+            ->with('layout', $this->layout);
+    }
+
+    /**
+     * This will display add permission
+     * @param CreatePermissionRequest $request
+     * @return Redirect
+     */
+    public function savePermission(CreatePermissionRequest $request)
+    {
+        Permissions::create($request->all());
+        return redirect('admin/permissionsListing');
+    }
+
+    /**
+     * This will display edit permission
+     * @param CreatePermissionRequest $request
+     * @return Redirect
+     */
+    public function updatePermission(CreatePermissionRequest $request)
+    {
+        $permissions = Permissions::find($request->input('pid'));
+        $permissions->update($request->all());
+        return redirect('admin/permissionsListing');
+    }
 }
