@@ -34,10 +34,8 @@ class AdminController extends Controller
 
         if (!empty(config('user.master_layout_page'))) {
             $this->layout = config('user.master_layout_page');
-        }
-
-        if (!is_admin()) {
-            redirect('users/access_denied');
+        } else {
+            $this->layout = 'users::layout.user-master';
         }
     }
 
@@ -46,6 +44,10 @@ class AdminController extends Controller
      */
     public function user_listing()
     {
+        $check = access_check('user_listing');
+        if ($check !== true) {
+            return $check;
+        }
         $users = User::where('id', '<>', 1)->get();
         return view('users::admin.user_listing')
             ->with('users', $users)
@@ -55,14 +57,14 @@ class AdminController extends Controller
     /** This is function to edit users profile  */
     public function editUser($id)
     {
+        $check = access_check('edit_user');
+        if ($check !== true) {
+            return $check;
+        }
+
         $user = User::find($id);
         $roles = Roles::all();
-        $user_roles = array();
-        $user_roles_arr = $user->user_roles()->get();
-
-        foreach ($user_roles_arr as $user_role_row) {
-            $user_roles[] = $user_role_row->rid;
-        }
+        $user_roles = get_user_roles($id);
 
         if ($user) {
             return view('users::admin.edit-user')
@@ -84,6 +86,11 @@ class AdminController extends Controller
      */
     public function saveUserProfile(Request $request)
     {
+        $check = access_check('edit_user');
+        if ($check !== true) {
+            return $check;
+        }
+
         if (!empty($request->input('user_id'))) {
             $user_id = $request->input('user_id');
 
@@ -92,10 +99,12 @@ class AdminController extends Controller
                 $user->name = $request->input('name');
                 $user->save();
             }
-
+            UserRoles::where('uid', $user_id)->delete();
+            UserRoles::create(['uid' => $user_id, 'rid' => 2]);
             if (!empty($request->input('roles')) and count($request->input('roles')) > 0) {
-                UserRoles::where('uid', $user_id)->delete();
+
                 $roles = $request->input('roles');
+
                 foreach ($roles as $role) {
                     UserRoles::create(['uid' => $user_id, 'rid' => $role]);
                 }
@@ -114,6 +123,11 @@ class AdminController extends Controller
     /** This is function to delete users profile by admin */
     public function deleteUser($id)
     {
+        $check = access_check('delete_user');
+        if ($check !== true) {
+            return $check;
+        }
+
         $user = User::find($id);
 
         if ($user) {
@@ -133,6 +147,11 @@ class AdminController extends Controller
     /** This is function to change users password by admin  */
     public function changeUserPassword($id)
     {
+        $check = access_check('change_user_password');
+        if ($check !== true) {
+            return $check;
+        }
+
         $user = User::find($id);
         if ($user) {
             return view('users::admin.change-user-password')
@@ -147,13 +166,18 @@ class AdminController extends Controller
 
     /**
      * Check current password and then change
-     * the new password set by the user.
+     * the new password set by the admin.
      *
      * @param  Illuminate\Http\Request
      * @return redirect to change password
      */
     public function saveUserPassword(Request $request)
     {
+        $check = access_check('change_user_password');
+        if ($check !== true) {
+            return $check;
+        }
+
         $fields = array(
             'password' => Input::get('password'),
             'password_confirmation' => Input::get('password_confirmation')
@@ -182,6 +206,10 @@ class AdminController extends Controller
 
     public function getPermissionMatrix()
     {
+        $check = access_check('permission_matrix');
+        if ($check !== true) {
+            return $check;
+        }
         $permissionMatrixObj = new PermissionMatrix();
         $permissionMatrix = $permissionMatrixObj->get_all_permisssions();
         $all_roles = Roles::all();
@@ -196,6 +224,11 @@ class AdminController extends Controller
      */
     public function savePermissionMatrix(Request $request)
     {
+        $check = access_check('permission_matrix');
+        if ($check !== true) {
+            return $check;
+        }
+
         RolePermissions::truncate();
         $permission_matrix = $request->input('pm');
         if (count($permission_matrix) > 0) {
@@ -214,6 +247,10 @@ class AdminController extends Controller
      */
     public function role_listing()
     {
+        $check = access_check('role_listing');
+        if ($check !== true) {
+            return $check;
+        }
         $roles = Roles::all();
         return view('users::admin.role_listing')
             ->with('roles', $roles)
@@ -226,6 +263,10 @@ class AdminController extends Controller
      **/
     public function editRole($id)
     {
+        $check = access_check('edit_role');
+        if ($check !== true) {
+            return $check;
+        }
         $role = Roles::GetByRoleID($role_id)->first();
         if ($role) {
             return view('users::admin.edit-role')
@@ -244,6 +285,16 @@ class AdminController extends Controller
 
     public function saveRole(Request $request)
     {
+        $role_id = $request->input('rid');
+        if ($role_id) {
+            $check = access_check('edit_role');
+        } else {
+            $check = access_check('add_role');
+        }
+
+        if ($check !== true) {
+            return $check;
+        }
         $fields = array(
             'role' => Input::get('role')
         );
@@ -254,7 +305,6 @@ class AdminController extends Controller
             // send back to the page with the input data and errors
             return redirect()->back()->withInput()->withErrors($validator);
         } else {
-            $role_id = $request->input('rid');
             if ($role_id) {
                 $role = Roles::GetByRoleID($role_id)->first();
                 // change password and send back
@@ -276,6 +326,11 @@ class AdminController extends Controller
      */
     public function deleteRole($role_id)
     {
+        $check = access_check('delete_role');
+        if ($check !== true) {
+            return $check;
+        }
+
         $role = Roles::GetByRoleID($role_id)->first();
 
         if ($role) {
@@ -295,6 +350,11 @@ class AdminController extends Controller
      */
     public function addRole()
     {
+        $check = access_check('add_role');
+        if ($check !== true) {
+            return $check;
+        }
+
         return view('users::admin.add-role')
             ->with('layout', $this->layout);
     }

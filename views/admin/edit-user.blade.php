@@ -36,13 +36,13 @@
                     <label for="name" class="col-sm-2 control-label">Select Roles</label>
 
                     <div class="col-sm-6">
-                        <select multiple="multiple" name="roles[]" id="roles" class="form-control">
-                            @foreach($roles as $aKey => $aRole)
-                                @if($aRole->rid > 2)
-                                    <option value="{{$aRole->rid}}" @if(in_array($aRole->rid,$user_roles))selected="selected"@endif>{{$aRole->role}}</option>
-                                @endif
+                        @foreach($roles as $aKey => $aRole)
+                            <div class="checkbox @if($aRole->rid == 2) disabled @endif">
+                                <label>
+                                    <input type="checkbox" name="roles[]" value="{{$aRole->rid}}" @if(in_array($aRole->rid,$user_roles))checked="checked"@endif @if($aRole->rid == 2) disabled="disabled" @endif>  {{$aRole->role}}
+                                </label>
+                            </div>
                             @endforeach
-                        </select>
 
                         <p class="text-danger">{!! $errors->first('roles') !!}</p>
                     </div>

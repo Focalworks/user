@@ -7,20 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
 
-   /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'email', 'password','pasword_confirmation'];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
-
     /**
      * Registration rules
      **/
@@ -29,7 +15,6 @@ class User extends Model
         'email' => 'required|email|unique:users',
         'password' => 'required|min:5|confirmed'
     );
-
     /**
      * Login rules
      **/
@@ -37,21 +22,36 @@ class User extends Model
         'username' => 'required|email',
         'password' => 'required'
     );
-
-
     /**
      * Change Password rules
      **/
     public static $change_password_rules = array(
-    	'current_password' => 'required',
+        'current_password' => 'required',
         'password' => 'required|min:5|confirmed'
     );
-
-
+    /**
+     * Forgot Password rules
+     **/
+    public static $forgot_password_rules = array(
+        'username' => 'required|email',
+    );
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email', 'password', 'pasword_confirmation'];
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token'];
 
     public function user_roles()
     {
-        return $this->hasMany('Focalworks\Users\UserRoles','uid','id');
+        return $this->hasMany('Focalworks\Users\UserRoles', 'uid', 'id');
     }
+
 
 }

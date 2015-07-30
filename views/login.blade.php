@@ -57,7 +57,7 @@
             </form>
 
             <a href="{{ url('users/register')  }}" class="btn btn-link">New User? Register Here!!</a>
-            <a href="{{ url('users/login')  }}" class="btn btn-link">Forgot Password?</a>
+            <a href="{{ url('users/forgotPassword')  }}" class="btn btn-link">Forgot Password?</a>
         </div>
     </div>
 @endsection

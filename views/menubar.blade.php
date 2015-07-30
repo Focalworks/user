@@ -1,4 +1,3 @@
-
 @if(Auth::check())
     <div class="row">
         @if(is_admin())

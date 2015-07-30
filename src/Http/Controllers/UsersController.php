@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -28,11 +30,22 @@ class UsersController extends Controller
      */
     public function __construct()
     {
-        dd(Config::get('user.login_redirect'));
+        //dd(Config::get('user.login_redirect'));
         // set which methods will be authenticated
         // and which are not
         $this->middleware('auth', [
-            'except' => ['register', 'doRegister', 'login', 'doLogin', 'logout', 'access_denied'],
+            'except' => [
+                'register',
+                'doRegister',
+                'login',
+                'doLogin',
+                'logout',
+                'forgotPassword',
+                'sendPasswordEmail',
+                'resetPassword',
+                'saveResetPassword',
+                'access_denied'
+            ],
         ]);
 
         if (!empty(config('user.login_redirect'))) {
@@ -40,8 +53,9 @@ class UsersController extends Controller
         }
 
         if (!empty(config('user.master_layout_page'))) {
-
             $this->layout = config('user.master_layout_page');
+        } else {
+            $this->layout = 'users::layout.user-master';
         }
     }
 
@@ -99,6 +113,106 @@ class UsersController extends Controller
         Session::flash('success', 'You have registered successfully');
         return Redirect::to('users/login');
     }
+
+    /**
+     * function to request a new password for user
+     * @return void
+     */
+    public function forgotPassword()
+    {
+        return view('users::forgot_password')->with('layout', $this->layout);
+    }
+
+    /**
+     * Send email for password resetting
+     */
+    public function sendPasswordEmail(Request $request)
+    {
+        $fields = array('username' => Input::get('username'));
+
+        // doing the validation, passing post data, rules and the messages
+        $validator = Validator::make($fields, User::$forgot_password_rules);
+
+        if ($validator->fails()) {
+            // send back to the page with the input data and errors
+            return Redirect::to('users/forgotPassword')->withInput()->withErrors($validator);
+        } else {
+            $username = $request->input('username');
+            $user = User::where('email', '=', $username)->first(); //find user by given username
+            if ($user) {
+                $data['uid'] = $user->id;
+                $data['email'] = $user->email;
+                $encrypt = md5(1490 * 4 + $data['uid']);
+                $data['password_reset_link'] = url() . '/users/resetPassword/' . $encrypt;
+
+                $data['admin_email'] = get_admin_email(); // get admin email
+
+                Mail::send('emails.reset_password', $data, function ($message, $data) {
+                    $message->from($data['admin_email'], 'Admin');
+                    $message->to($data['email']);
+                    $message->subject('Reset Your Password');
+                });
+
+                Session::flash('success', 'Please check your mails..for further details');
+            } else {
+                Session::flash('error', 'Invalid email address.please type a valid email');
+            }
+
+            return redirect('users/forgotPassword');
+        }
+    }
+
+    /**
+     * Reset users password here
+     */
+    public function resetPassword($encrypt = '')
+    {
+        if (!empty($encrypt)) {
+            $user = DB::select(DB::raw('Select * from users where md5(1490 * 4 + id) = "' . $encrypt . '"'));
+            if (count($user) > 0) {
+                return view('users::reset_password')
+                    ->with('user', $user[0])
+                    ->with('layout', $this->layout);
+            } else {
+                Session::flash('error', 'Invalid password reset link.');
+                return redirect('users/login');
+            }
+        } else {
+            Session::flash('error', 'Invalid password reset link.');
+            return redirect('users/login');
+        }
+    }
+
+    /**
+     *
+     * the new password set by the user.
+     *
+     * @param  Illuminate\Http\Request
+     * @return redirect to change password
+     */
+    public function saveResetPassword(Request $request)
+    {
+        $fields = array(
+            'password' => Input::get('password'),
+            'password_confirmation' => Input::get('password_confirmation')
+        );
+        $rules = array('password' => 'required|min:5|confirmed');
+        $validator = Validator::make($fields, $rules);
+
+        if ($validator->fails()) {
+            // send back to the page with the input data and errors
+            return redirect()->back()->withInput()->withErrors($validator);
+        } else {
+            $user_id = $request->input('user_id');
+            $user = User::find($user_id);
+            // change password and send back
+            $user->password = Hash::make($request->input('password'));
+            $user->save();
+            Session::flash('success', 'Password changed successfully.');
+            return redirect('users/login');
+        }
+    }
+
 
     /**
      * Login page
@@ -228,6 +342,10 @@ class UsersController extends Controller
      */
     public function saveNewPassword(Request $request)
     {
+        $check = access_check('change_password');
+        if ($check !== true) {
+            return $check;
+        }
         $fields = array(
             'current_password' => Input::get('current_password'),
             'password' => Input::get('password'),
@@ -281,6 +399,10 @@ class UsersController extends Controller
      */
     public function saveUserProfile(Request $request)
     {
+        $check = access_check('edit_profile');
+        if ($check !== true) {
+            return $check;
+        }
         if (!empty($request->input('name'))) {
             $user = User::find(Auth::user()->id);
             $user->name = $request->input('name');

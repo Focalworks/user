@@ -5,9 +5,8 @@
 @section('content')
     <div class="row">
         <div class="col-md-10 well col-md-push-1" role="main">
-            @include('users::menubar')
 
-            <h2>Change User Password : {!! $user->name !!}</h2>
+            <h2>Reset Password : {!! $user->name !!}</h2>
             <br/>
 
             @if(Session::has('error'))
@@ -18,7 +17,7 @@
                 <div class="alert alert-success">{!! Session::get('success') !!}</div>
             @endif
 
-            <form action="{{ url('admin/saveUserPassword')  }}" method="POST" class="form-horizontal">
+            <form action="{{ url('users/resetPassword')  }}" method="POST" class="form-horizontal">
 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                  <input type="hidden" name="user_id" value="{{ $user->id }}">
@@ -44,7 +43,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-primary">Save</button>
-                        <a href="{{ url('admin/userListing')  }}" class="btn btn-link">Cancel</a>
+                        <a href="{{ url('users/login')  }}" class="btn btn-link">Cancel</a>
                     </div>
                 </div>
             </form>

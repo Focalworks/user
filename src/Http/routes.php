@@ -2,6 +2,10 @@
 
 Route::get('users/register', 'Focalworks\Users\Http\Controllers\UsersController@register');
 Route::post('users/register', 'Focalworks\Users\Http\Controllers\UsersController@doRegister');
+Route::get('users/forgotPassword', 'Focalworks\Users\Http\Controllers\UsersController@forgotPassword');
+Route::post('users/forgotPassword', 'Focalworks\Users\Http\Controllers\UsersController@sendPasswordEmail');
+Route::get('users/resetPassword/{encrypt}', 'Focalworks\Users\Http\Controllers\UsersController@resetPassword');
+Route::post('users/resetPassword', 'Focalworks\Users\Http\Controllers\UsersController@saveResetPassword');
 Route::get('users/login', 'Focalworks\Users\Http\Controllers\UsersController@login');
 Route::post('users/login', 'Focalworks\Users\Http\Controllers\UsersController@doLogin');
 Route::get('users/dashboard', 'Focalworks\Users\Http\Controllers\UsersController@dashboard');
