@@ -32,6 +32,6 @@
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         <button class="btn btn-primary">{{ $submitButtonTxt }}</button>
-        <a href="{{ url('admin/permissionListing')  }}" class="btn btn-link">Cancel</a>
+        <a href="{{ url('admin/permissionsListing')  }}" class="btn btn-link">Cancel</a>
     </div>
 </div>

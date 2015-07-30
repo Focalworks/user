@@ -2,6 +2,7 @@
 
 namespace Focalworks\Users\Http\Controllers;
 
+use Focalworks\Users\Http\Requests\CreatePermissionRequest;
 use Focalworks\Users\PermissionMatrix;
 use Focalworks\Users\Permissions;
 use Focalworks\Users\RolePermissions;
@@ -316,12 +317,14 @@ class AdminController extends Controller
      * This will delete permission
      *
      */
-    public function deletePermission()
+    public function deletePermission($id)
     {
-        $permissions = Permissions::all();
-        return view('users::admin.permissions-listing')
-            ->with('permissions', $permissions)
-            ->with('layout', $this->layout);
+        $permission = Permissions::find($id);
+        if($permission) {
+            $permissionObj = new Permissions();
+            $permissionObj->where('pid', $id)->delete();
+        }
+        return redirect('admin/permissionsListing');
     }
 
     /**
@@ -349,20 +352,21 @@ class AdminController extends Controller
 
     /**
      * This will display add permission
-     *
+     * @param CreatePermissionRequest $request
+     * @return Redirect
      */
-    public function savePermission(Request $request)
+    public function savePermission(CreatePermissionRequest $request)
     {
-//        $permissions = Permissions();
-//        $permissions->create($request->all());
+        Permissions::create($request->all());
         return redirect('admin/permissionsListing');
     }
 
     /**
      * This will display edit permission
-     *
+     * @param CreatePermissionRequest $request
+     * @return Redirect
      */
-    public function updatePermission(Request $request)
+    public function updatePermission(CreatePermissionRequest $request)
     {
         $permissions = Permissions::find($request->input('pid'));
         $permissions->update($request->all());

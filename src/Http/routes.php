@@ -33,5 +33,5 @@ Route::get('admin/editPermission/{id}', 'Focalworks\Users\Http\Controllers\Admin
 Route::get('admin/addPermission', 'Focalworks\Users\Http\Controllers\AdminController@addPermission');
 
 Route::post('admin/editPermission', 'Focalworks\Users\Http\Controllers\AdminController@updatePermission');
-Route::post('admin/deletePermission', 'Focalworks\Users\Http\Controllers\AdminController@deletePermission');
+Route::get('admin/deletePermission/{id}', 'Focalworks\Users\Http\Controllers\AdminController@deletePermission');
 Route::post('admin/addPermission', 'Focalworks\Users\Http\Controllers\AdminController@savePermission');
