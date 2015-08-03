@@ -9,7 +9,7 @@ Route::post('users/resetPassword', 'Focalworks\Users\Http\Controllers\UsersContr
 Route::get('users/login', 'Focalworks\Users\Http\Controllers\UsersController@login');
 Route::post('users/login', 'Focalworks\Users\Http\Controllers\UsersController@doLogin');
 Route::get('users/dashboard', 'Focalworks\Users\Http\Controllers\UsersController@dashboard');
-Route::get('users/myprofile', 'Focalworks\Users\Http\Controllers\UsersController@myprofile');
+Route::get('users/myprofile', 'Focalworks\Users\Http\Controllers\UsersController@myProfile');
 Route::get('users/changePassword', 'Focalworks\Users\Http\Controllers\UsersController@changePassword');
 Route::post('users/saveNewPassword', 'Focalworks\Users\Http\Controllers\UsersController@saveNewPassword');
 Route::get('users/editProfile', 'Focalworks\Users\Http\Controllers\UsersController@editProfile');

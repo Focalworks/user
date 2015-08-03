@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Focalworks\Users\User;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +18,18 @@ use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
-    /*callback function after successfull login */
+    /**
+     * URL where the user will redirect after successful login.
+     *
+     * @var Config|string
+     */
     protected $login_redirect = 'users/dashboard';
 
-    /*master layout page */
+    /**
+     * The default layout which will be used for User screens.
+     *
+     * @var string
+     */
     protected $layout = '';
 
     /**
@@ -66,7 +73,8 @@ class UsersController extends Controller
 
     public function register()
     {
-        return view('users::register')->with('layout', $this->layout);
+        return view('users::register')
+            ->with('layout', $this->layout);
     }
 
 
@@ -268,8 +276,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Dashboard page
-     *
+     * This is the user's dashboard page.
      */
     public function dashboard()
     {
@@ -289,10 +296,8 @@ class UsersController extends Controller
 
     /**
      * Current User's Profile page
-     *
      */
-
-    public function myprofile()
+    public function myProfile()
     {
         $check = access_check('myprofile');
         if ($check !== true) {
