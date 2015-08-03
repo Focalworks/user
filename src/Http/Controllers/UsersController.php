@@ -30,7 +30,7 @@ class UsersController extends Controller
      *
      * @var string
      */
-    protected $layout = '';
+    protected $layout = 'users::layout.user-master';
 
     /**
      * This is the constructor for the Controller
@@ -54,14 +54,14 @@ class UsersController extends Controller
             ],
         ]);
 
+        // check the redirect url from the config file if there is any
         if (!empty(config('user.login_redirect'))) {
             $this->login_redirect = config('user.login_redirect');
         }
 
+        // override the layout if config is set
         if (!empty(config('user.master_layout_page'))) {
             $this->layout = config('user.master_layout_page');
-        } else {
-            $this->layout = 'users::layout.user-master';
         }
     }
 
@@ -79,10 +79,11 @@ class UsersController extends Controller
 
 
     /**
-     * save registered user
+     * Validate and save the user data to create a new user.
      *
+     * @param Request $request
+     * @return mixed
      */
-
     public function doRegister(Request $request)
     {
         $fields = array(
@@ -131,7 +132,10 @@ class UsersController extends Controller
     }
 
     /**
-     * Send email for password resetting
+     * Send email for password resetting.
+     *
+     * @param Request $request
+     * @return Redirect
      */
     public function sendPasswordEmail(Request $request)
     {
@@ -171,6 +175,9 @@ class UsersController extends Controller
 
     /**
      * Reset users password here
+     *
+     * @param string $encrypt
+     * @return $this|Redirect
      */
     public function resetPassword($encrypt = '')
     {
@@ -191,8 +198,7 @@ class UsersController extends Controller
     }
 
     /**
-     *
-     * the new password set by the user.
+     * The new password set by the user.
      *
      * @param  Illuminate\Http\Request
      * @return redirect to change password
@@ -220,13 +226,11 @@ class UsersController extends Controller
         }
     }
 
-
     /**
-     * Login page
+     * Login page of the user
      *
-     * @return void
+     * @return $this|Redirect
      */
-
     public function login()
     {
         if (Auth::check()) {
@@ -243,9 +247,9 @@ class UsersController extends Controller
     /**
      * Function to match credentials and logged in user
      *
-     * @return void
+     * @param Request $request
+     * @return Redirect
      */
-
     public function doLogin(Request $request)
     {
         $fields = array('username' => Input::get('username'), 'password' => Input::get('password'));
@@ -280,41 +284,45 @@ class UsersController extends Controller
      */
     public function dashboard()
     {
-        $user = Auth::user();
-        $roles = UserRoles::where('uid', '=', $user->id)->first();
+        $roles = UserRoles::where('uid', '=', Auth::user()->id)->first();
 
-        $current_role = $roles->rid;
-
-        if ($current_role == 1) {
+        if ($roles->rid == 1) {
+            // if admin, take him to the admin section
             return redirect('admin/userListing');
-        } else {
-            return $this->myprofile();
         }
 
+        return $this->myprofile();
     }
-
 
     /**
      * Current User's Profile page
+     *
+     * @return $this|bool|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function myProfile()
     {
         $check = access_check('myprofile');
+
         if ($check !== true) {
             return $check;
         }
 
-        $user = Auth::user();
-        $current_user_roles = User::find($user->id)->user_roles()->get();
+        $current_user_roles = User::find(Auth::user()->id)->user_roles()->get();
+
         //print_r($current_user_roles);exit;
+
         return view('users::myprofile')
-            ->with('user', $user)
+            ->with('user', Auth::user())
             ->with('user_roles', $current_user_roles)
             ->with('layout', $this->layout);
 
     }
 
-    /** access denied page **/
+    /**
+     * Access denied page
+     *
+     * @return $this
+     */
     public function access_denied()
     {
         return view('users::access-denied')
@@ -324,8 +332,8 @@ class UsersController extends Controller
     /**
      * Current User can change his own password
      *
+     * @return $this|bool|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-
     public function changePassword()
     {
         $check = access_check('change_password');
@@ -430,7 +438,9 @@ class UsersController extends Controller
     public function logout()
     {
         Auth::logout();
+
         Session::flash('success', 'You have logged out.');
+
         return Redirect::to('users/login');
     }
 

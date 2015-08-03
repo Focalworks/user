@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 well col-md-push-1" role="main">
+        <div class="col-md-10 col-md-push-1" role="main">
             @include('users::menubar')
 
             <h2>Welcome {!! strtoupper($user->name) !!}</h2>

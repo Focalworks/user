@@ -2,23 +2,20 @@
 
 namespace Focalworks\Users\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Focalworks\Users\Http\Requests\CreatePermissionRequest;
 use Focalworks\Users\PermissionMatrix;
 use Focalworks\Users\Permissions;
 use Focalworks\Users\RolePermissions;
+use Focalworks\Users\Roles;
+use Focalworks\Users\User;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Focalworks\Users\User;
-use Focalworks\Users\Roles;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -44,7 +41,7 @@ class AdminController extends Controller
     /**
      * This is the user listing page
      */
-    public function user_listing()
+    public function userListing()
     {
         $check = access_check('user_listing');
         if ($check !== true) {
