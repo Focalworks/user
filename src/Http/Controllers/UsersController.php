@@ -145,7 +145,7 @@ class UsersController extends Controller
                 $data['password_reset_link'] = url() . '/users/resetPassword/' . $encrypt;
 
                 $data['admin_email'] = get_admin_email(); // get admin email
-
+                dd($data);
                 Mail::send('emails.reset_password', $data, function ($message, $data) {
                     $message->from($data['admin_email'], 'Admin');
                     $message->to($data['email']);
