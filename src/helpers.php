@@ -9,6 +9,7 @@ if (!function_exists('access_check')) {
     function access_check($permission_name = '')
     {
         $current_user = Auth::user();
+
         if ($current_user->id == 1) {
             return true; //if admin logged in
         } else {

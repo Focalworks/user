@@ -1,15 +1,24 @@
 <?php
 
-Route::get('users/register', 'Focalworks\Users\Http\Controllers\UsersController@register');
-Route::post('users/register', 'Focalworks\Users\Http\Controllers\UsersController@doRegister');
-Route::get('users/forgotPassword', 'Focalworks\Users\Http\Controllers\UsersController@forgotPassword');
-Route::post('users/forgotPassword', 'Focalworks\Users\Http\Controllers\UsersController@sendPasswordEmail');
+Route::group(['prefix' => 'users'], function () {
+    // registration
+    Route::get('register', 'Focalworks\Users\Http\Controllers\UsersController@register');
+    Route::post('register', 'Focalworks\Users\Http\Controllers\UsersController@doRegister');
+
+    // forgot password
+    Route::get('forgotPassword', 'Focalworks\Users\Http\Controllers\UsersController@forgotPassword');
+    Route::post('forgotPassword', 'Focalworks\Users\Http\Controllers\UsersController@sendPasswordEmail');
+
+    // user login
+    Route::get('login', 'Focalworks\Users\Http\Controllers\UsersController@login');
+    Route::post('login', 'Focalworks\Users\Http\Controllers\UsersController@doLogin');
+});
+
+
 Route::get('users/resetPassword/{encrypt}', 'Focalworks\Users\Http\Controllers\UsersController@resetPassword');
 Route::post('users/resetPassword', 'Focalworks\Users\Http\Controllers\UsersController@saveResetPassword');
-Route::get('users/login', 'Focalworks\Users\Http\Controllers\UsersController@login');
-Route::post('users/login', 'Focalworks\Users\Http\Controllers\UsersController@doLogin');
 Route::get('users/dashboard', 'Focalworks\Users\Http\Controllers\UsersController@dashboard');
-Route::get('users/myprofile', 'Focalworks\Users\Http\Controllers\UsersController@myprofile');
+Route::get('users/myprofile', 'Focalworks\Users\Http\Controllers\UsersController@myProfile');
 Route::get('users/changePassword', 'Focalworks\Users\Http\Controllers\UsersController@changePassword');
 Route::post('users/saveNewPassword', 'Focalworks\Users\Http\Controllers\UsersController@saveNewPassword');
 Route::get('users/editProfile', 'Focalworks\Users\Http\Controllers\UsersController@editProfile');
