@@ -13,7 +13,7 @@ class Permissions extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'display_name','group'];
+    protected $fillable = ['name', 'display_name', 'group'];
 
     protected $primaryKey = 'pid';
 
