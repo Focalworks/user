@@ -50,10 +50,8 @@
                             @endif
                         </tbody>
                     </table>
-
-                            <button class="btn btn-primary">Save</button>
-                      
-                    </div>
+                    <hr/>
+                    <button class="btn btn-primary">Save</button>
                 </form>
             @endif
         </div>
