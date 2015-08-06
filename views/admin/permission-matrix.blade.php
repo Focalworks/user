@@ -4,19 +4,13 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 well col-md-push-1" role="main">
-            @include('users::menubar')
+        <div class="col-md-10 col-md-push-1" role="main">
+            @include('users::partials.menubar')
 
             <h2>Permission Matrix</h2>
             <br/>
 
-            @if(Session::has('error'))
-                <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-            @endif
-
-            @if(Session::has('success'))
-                <div class="alert alert-success">{!! Session::get('success') !!}</div>
-            @endif
+            @include('users::errors.error-block')
 
             @if ($permission_matrix)
                 <form action="{{ url('admin/permissionMatrix')  }}" method="POST" class="form-horizontal">
@@ -56,10 +50,9 @@
                             @endif
                         </tbody>
                     </table>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
+
                             <button class="btn btn-primary">Save</button>
-                        </div>
+                      
                     </div>
                 </form>
             @endif

@@ -4,19 +4,13 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 well col-md-push-1" role="main">
-            @include('users::menubar')
+        <div class="col-md-10 col-md-push-1" role="main">
+            @include('users::partials.menubar')
 
             <h2>Edit User : {!! $user->name !!}</h2>
             <br/>
 
-            @if(Session::has('error'))
-                <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-            @endif
-
-            @if(Session::has('success'))
-                <div class="alert alert-success">{!! Session::get('success') !!}</div>
-            @endif
+            @include('users::errors.error-block')
 
             <form action="{{ url('admin/saveUserProfile')  }}" method="POST" class="form-horizontal">
 

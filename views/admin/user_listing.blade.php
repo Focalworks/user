@@ -5,18 +5,12 @@
 @section('content')
     <div class="row">
         <div class="col-md-10 col-md-push-1" role="main">
-            @include('users::menubar')
+            @include('users::partials.menubar')
 
             <h2>Users List</h2>
             <br/>
 
-            @if(Session::has('error'))
-                <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-            @endif
-
-            @if(Session::has('success'))
-                <div class="alert alert-success">{!! Session::get('success') !!}</div>
-            @endif
+            @include('users::errors.error-block')
 
             <table id="usertbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>

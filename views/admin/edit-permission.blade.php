@@ -4,8 +4,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 well col-md-push-1" role="main">
-            @include('users::menubar')
+        <div class="col-md-10 col-md-push-1" role="main">
+            @include('users::partials.menubar')
 
             <h2>Edit: {{ $permission->name }}</h2>
             <br/>

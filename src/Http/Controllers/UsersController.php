@@ -311,7 +311,7 @@ class UsersController extends Controller
 
         //print_r($current_user_roles);exit;
 
-        return view('users::myprofile')
+        return view('users::user.myprofile')
             ->with('user', Auth::user())
             ->with('user_roles', $current_user_roles)
             ->with('layout', $this->layout);
@@ -341,7 +341,7 @@ class UsersController extends Controller
             return $check;
         }
 
-        return view('users::change-password')
+        return view('users::user.change-password')
             ->with('layout', $this->layout);
     }
 
@@ -398,7 +398,7 @@ class UsersController extends Controller
             return $check;
         }
 
-        return view('users::edit-profile')
+        return view('users::user.edit-profile')
             ->with('user', Auth::user())
             ->with('layout', $this->layout);
     }

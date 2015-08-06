@@ -4,8 +4,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 well col-md-push-1" role="main">
-            @include('users::menubar')
+        <div class="col-md-10 col-md-push-1" role="main">
+            @include('users::partials.menubar')
 
             <h2>Permissions</h2>
             <br/>
@@ -20,9 +20,10 @@
                     <table id="pmtbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Actions</th>
+                                <th>Name</th>
                                 <th>Display Name</th>
                                 <th>Groups</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>

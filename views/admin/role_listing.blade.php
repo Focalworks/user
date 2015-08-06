@@ -4,19 +4,13 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 well col-md-push-1" role="main">
-            @include('users::menubar')
+        <div class="col-md-10 col-md-push-1" role="main">
+            @include('users::partials.menubar')
 
             <h2>All Roles</h2>
 
             <div class="pull-right"><a href="{{ url('admin/addRole/') }}" class="btn btn-link" title="Edit User"><span class="glyphicon glyphicon-plus"></span> Add New Role</a></div>
-            @if(Session::has('error'))
-                <div class="alert alert-danger">{!! Session::get('error') !!}</div>
-            @endif
-
-            @if(Session::has('success'))
-                <div class="alert alert-success">{!! Session::get('success') !!}</div>
-            @endif
+            @include('users::errors.error-block')
 
             <table id="roletbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>

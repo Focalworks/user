@@ -266,7 +266,7 @@ class AdminController extends Controller
         if ($check !== true) {
             return $check;
         }
-        $role = Roles::GetByRoleID($role_id)->first();
+        $role = Roles::GetByRoleID($id)->first();
         if ($role) {
             return view('users::admin.edit-role')
                 ->with('role', $role)
