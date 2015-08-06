@@ -20,7 +20,6 @@ if (!function_exists('access_check')) {
                 return true;
             }
         }
-
         return redirect('users/access_denied');
     }
 }
@@ -49,7 +48,7 @@ if (!function_exists('view_access_check')) {
             }
         }
 
-        return redirect('users/access_denied');
+        return false;
     }
 }
 

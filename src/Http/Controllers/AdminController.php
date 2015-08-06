@@ -98,7 +98,10 @@ class AdminController extends Controller
                 $user->name = $request->input('name');
                 $user->save();
             }
+            /* delete all existing userroles of user */
+
             UserRoles::where('uid', $user_id)->delete();
+            /*save new roles of user */
             UserRoles::create(['uid' => $user_id, 'rid' => 2]);
             if (!empty($request->input('roles')) and count($request->input('roles')) > 0) {
 
@@ -131,6 +134,7 @@ class AdminController extends Controller
 
         if ($user) {
             $user_roles = new UserRoles();
+            /* delete all existing userroles of user */
             $user_roles->where('uid', '=', $id)->delete();
             $user->delete();
 
@@ -364,6 +368,10 @@ class AdminController extends Controller
      */
     public function permissionsListing()
     {
+        $check = access_check('permission_listing');
+        if ($check !== true) {
+            return $check;
+        }
         $permissions = Permissions::all();
         return view('users::admin.permissions-listing')
             ->with('permissions', $permissions)
@@ -376,6 +384,11 @@ class AdminController extends Controller
      */
     public function deletePermission($id)
     {
+        $check = access_check('delete_permission');
+        if ($check !== true) {
+            return $check;
+        }
+
         $permission = Permissions::find($id);
         if ($permission) {
             $permissionObj = new Permissions();
@@ -390,6 +403,10 @@ class AdminController extends Controller
      */
     public function addPermission()
     {
+        $check = access_check('add_permission');
+        if ($check !== true) {
+            return $check;
+        }
         $permissions = Permissions::all();
         return view('users::admin.add-permission')
             ->with('layout', $this->layout);
@@ -401,6 +418,10 @@ class AdminController extends Controller
      */
     public function editPermission($id)
     {
+        $check = access_check('edit_permission');
+        if ($check !== true) {
+            return $check;
+        }
         $permission = Permissions::find($id);
         return view('users::admin.edit-permission')
             ->with('permission', $permission)
@@ -414,6 +435,10 @@ class AdminController extends Controller
      */
     public function savePermission(CreatePermissionRequest $request)
     {
+        $check = access_check('add_permission');
+        if ($check !== true) {
+            return $check;
+        }
         Permissions::create($request->all());
         return redirect('admin/permissionsListing');
     }
@@ -425,6 +450,10 @@ class AdminController extends Controller
      */
     public function updatePermission(CreatePermissionRequest $request)
     {
+        $check = access_check('edit_permission');
+        if ($check !== true) {
+            return $check;
+        }
         $permissions = Permissions::find($request->input('pid'));
         $permissions->update($request->all());
         return redirect('admin/permissionsListing');

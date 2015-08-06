@@ -9,7 +9,7 @@
 
             <h2>All Roles</h2>
 
-            <div class="pull-right"><a href="{{ url('admin/addRole/') }}" class="btn btn-link" title="Edit User"><span class="glyphicon glyphicon-plus"></span> Add New Role</a></div>
+            @if(view_access_check('add_role')) <div class="pull-right"><a href="{{ url('admin/addRole/') }}" class="btn btn-link" title="Edit User"><span class="glyphicon glyphicon-plus"></span> Add New Role</a></div> @endif
             @include('users::errors.error-block')
 
             <table id="roletbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -29,9 +29,13 @@
                                 <td>{!! $role->role !!}</td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ url('admin/editRole/'.$role->rid) }}" class="btn btn-link" title="Edit Role"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        @if ($role->rid != 1 && $role->rid != 2)
-                                        <a href="{{ url('admin/deleteRole/'.$role->rid) }}" class="btn btn-link" title="Delete Role" onclick="return confirm('Do you really want to delete this role?')"><span class="glyphicon glyphicon-trash"></span></a>
+                                        @if(view_access_check('edit_role'))
+                                            <a href="{{ url('admin/editRole/'.$role->rid) }}" class="btn btn-link" title="Edit Role"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        @endif
+                                        @if(view_access_check('delete_role'))
+                                            @if ($role->rid != 1 && $role->rid != 2)
+                                                <a href="{{ url('admin/deleteRole/'.$role->rid) }}" class="btn btn-link" title="Delete Role" onclick="return confirm('Do you really want to delete this role?')"><span class="glyphicon glyphicon-trash"></span></a>
+                                            @endif
                                         @endif
                                     </div>
                                 </td>

@@ -10,7 +10,7 @@
             <h2>Permissions</h2>
             <br/>
 
-            <div class="pull-right"><a href="{{ url('admin/addPermission') }}" class="btn btn-link" title="Add Permission"><span class="glyphicon glyphicon-plus"></span> Add New</a></div>
+            @if(view_access_check('add_permission')) <div class="pull-right"><a href="{{ url('admin/addPermission') }}" class="btn btn-link" title="Add Permission"><span class="glyphicon glyphicon-plus"></span> Add New</a></div> @endif
             <div class="clearfix"></div>
             @include('users::errors.error-block')
 
@@ -37,10 +37,12 @@
 
                                             <td>
                                                 <div class="btn-group" role="group">
+                                                @if(view_access_check('edit_permission'))
                                                     <a href="{{ url('admin/editPermission/'.$permission->pid) }}" class="btn btn-link" title="Edit Permission"><span class="glyphicon glyphicon-pencil"></span></a>
-
+                                                @endif
+                                                @if(view_access_check('delete_permission'))
                                                         <a href="{{ url('admin/deletePermission/'.$permission->pid) }}" class="btn btn-link" title="Delete Permission" onclick="return confirm('Do you really want to delete this permission?')"><span class="glyphicon glyphicon-trash"></span></a>
-
+                                                @endif
                                                 </div>
                                             </td>
 

@@ -41,14 +41,20 @@
                             <td>{!! date('d-m-Y H:i:s',strtotime($user->updated_at)) !!}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="{{ url('admin/editUser/'.$user->id)  }}" class="btn btn-link"
-                                       title="Edit User"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    <a href="{{ url('admin/changeUserPassword/'.$user->id)  }}" class="btn btn-link"
-                                       title="Change User Password"><span class="glyphicon glyphicon-cog"></span></a>
-                                    <a href="{{ url('admin/deleteUser/'.$user->id)  }}" class="btn btn-link"
+                                    @if(view_access_check('edit_user'))
+                                        <a href="{{ url('admin/editUser/'.$user->id)  }}" class="btn btn-link"
+                                           title="Edit User"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    @endif
+                                    @if(view_access_check('change_user_password'))
+                                        <a href="{{ url('admin/changeUserPassword/'.$user->id)  }}" class="btn btn-link"
+                                           title="Change User Password"><span class="glyphicon glyphicon-cog"></span></a>
+                                    @endif
+                                    @if(view_access_check('delete_user'))
+                                        <a href="{{ url('admin/deleteUser/'.$user->id)  }}" class="btn btn-link"
                                        title="Delete User"
                                        onclick="return confirm('Do you really want to delete this user?')"><span
                                                 class="glyphicon glyphicon-trash"></span></a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
