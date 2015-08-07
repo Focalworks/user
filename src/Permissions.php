@@ -3,6 +3,7 @@
 namespace Focalworks\Users;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Permissions extends Model
 {
@@ -17,9 +18,17 @@ class Permissions extends Model
 
     protected $primaryKey = 'pid';
 
-    public function getPermissionData($id)
+    public static function getPermissionByName($name)
     {
 
+        //print_r(SELF::where('name', '=', $name)->get());
+        //print_r(DB::getQueryLog());
+        return SELF::where('name', '=', $name);
+    }
+
+    public function role_permissions()
+    {
+        return $this->hasMany('Focalworks\Users\RolePermissions', 'pid', 'pid');
     }
 
 }

@@ -30,14 +30,24 @@
                     <label for="name" class="col-sm-2 control-label">Select Roles</label>
 
                     <div class="col-sm-6">
+                    <?php $user_roles = get_user_roles(Auth::user()->id); ?>
                         @foreach($roles as $aKey => $aRole)
-                            <div class="checkbox @if($aRole->rid == 2) disabled @endif">
-                                <label>
-                                    <input type="checkbox" name="roles[]" value="{{$aRole->rid}}" @if(in_array($aRole->rid,$user_roles))checked="checked"@endif @if($aRole->rid == 2) disabled="disabled" @endif>  {{$aRole->role}}
-                                </label>
-                            </div>
-                            @endforeach
-
+                            @if($aRole->rid == 1)
+                                @if(in_array(1,$user_roles))
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="roles[]" value="{{$aRole->rid}}">  {{$aRole->role}}
+                                        </label>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="checkbox @if($aRole->rid == 2) disabled @endif">
+                                    <label>
+                                        <input type="checkbox" name="roles[]" value="{{$aRole->rid}}" @if(in_array($aRole->rid,$user_roles))checked="checked"@endif @if($aRole->rid == 2) disabled="disabled" @endif>  {{$aRole->role}}
+                                    </label>
+                                </div>
+                            @endif
+                        @endforeach
                         <p class="text-danger">{!! $errors->first('roles') !!}</p>
                     </div>
                 </div>

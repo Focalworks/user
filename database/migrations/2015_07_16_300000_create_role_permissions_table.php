@@ -16,8 +16,8 @@ class CreateUserPermissionsTable extends Migration
             $table->increments('id');
             $table->integer('pid')->unsigned();
             $table->integer('rid')->unsigned();
-            $table->foreign('pid')->references('pid')->on('permissions')->onDelete('cascade');;
-            $table->foreign('rid')->references('rid')->on('roles');
+            $table->foreign('pid')->references('pid')->on('permissions')->onDelete('cascade');
+            $table->foreign('rid')->references('rid')->on('roles')->onDelete('cascade');
         });
     }
 

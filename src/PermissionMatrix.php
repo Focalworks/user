@@ -57,4 +57,14 @@ class PermissionMatrix
         return $all_permissions;
     }
 
+    public function check_permission_access($permission_id, $user_roles)
+    {
+        $rolePermissionsCount = RolePermissions::where('pid', '=', $permission_id)->whereIn('rid',
+            $user_roles)->count();
+        if ($rolePermissionsCount > 0) {
+            return true;
+        }
+        return false;
+    }
+
 } 

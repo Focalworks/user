@@ -41,15 +41,15 @@
                             <td>{!! date('d-m-Y H:i:s',strtotime($user->updated_at)) !!}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    @if(view_access_check('edit_user'))
+                                    @if(access_check('edit_user',true))
                                         <a href="{{ url('admin/editUser/'.$user->id)  }}" class="btn btn-link"
                                            title="Edit User"><span class="glyphicon glyphicon-pencil"></span></a>
                                     @endif
-                                    @if(view_access_check('change_user_password'))
+                                    @if(access_check('change_user_password',true))
                                         <a href="{{ url('admin/changeUserPassword/'.$user->id)  }}" class="btn btn-link"
                                            title="Change User Password"><span class="glyphicon glyphicon-cog"></span></a>
                                     @endif
-                                    @if(view_access_check('delete_user'))
+                                    @if(access_check('delete_user',true))
                                         <a href="{{ url('admin/deleteUser/'.$user->id)  }}" class="btn btn-link"
                                        title="Delete User"
                                        onclick="return confirm('Do you really want to delete this user?')"><span

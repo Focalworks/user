@@ -9,7 +9,7 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         \Focalworks\Users\Permissions::create([
-            'name' => 'user_list',
+            'name' => 'user_listing',
             'display_name' => 'Users List',
             'group' => 'User'
         ]);

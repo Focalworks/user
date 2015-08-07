@@ -11,6 +11,8 @@ use Focalworks\Users\Roles;
 use Focalworks\Users\User;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -47,7 +49,13 @@ class AdminController extends Controller
         if ($check !== true) {
             return $check;
         }
-        $users = User::where('id', '<>', 1)->get();
+        // DB::enableQueryLog();
+        $users = User::whereNotIn('id', function ($query) {
+            $query->select('uid')
+                ->from('user_roles')
+                ->where('rid', 1);
+        })->get();
+        //print_r(DB::getQueryLog());
         return view('users::admin.user_listing')
             ->with('users', $users)
             ->with('layout', $this->layout);
@@ -99,8 +107,13 @@ class AdminController extends Controller
                 $user->save();
             }
             /* delete all existing userroles of user */
+            $user_roles = get_user_roles(Auth::user()->id);
+            if (in_array(1, $user_roles)) {
+                UserRoles::where('uid', $user_id)->delete();
+            } else {
+                UserRoles::where('uid', $user_id)->where('rid', '<>', 1)->delete();
+            }
 
-            UserRoles::where('uid', $user_id)->delete();
             /*save new roles of user */
             UserRoles::create(['uid' => $user_id, 'rid' => 2]);
             if (!empty($request->input('roles')) and count($request->input('roles')) > 0) {
@@ -334,12 +347,10 @@ class AdminController extends Controller
             return $check;
         }
 
-        $role = Roles::GetByRoleID($role_id)->first();
-
+        $role = Roles::find($role_id);
         if ($role) {
-            $user_roles = new UserRoles();
-            $user_roles->where('rid', '=', $role_id)->delete();
-            $role->delete();
+            $roleObj = new Roles();
+            $roleObj->where('rid', $role_id)->delete();
             Session::flash('success', 'Role deleted successfully.');
             return redirect()->back();
         } else {
@@ -379,8 +390,8 @@ class AdminController extends Controller
     }
 
     /**
-     * This will delete permission
-     *
+     * @param $id
+     * @return bool|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Redirect
      */
     public function deletePermission($id)
     {
@@ -393,13 +404,16 @@ class AdminController extends Controller
         if ($permission) {
             $permissionObj = new Permissions();
             $permissionObj->where('pid', $id)->delete();
+            Session::flash('success', 'Permission deleted successfully.');
+        } else {
+            Session::flash('error', 'This Permission not exist.');
         }
         return redirect('admin/permissionsListing');
     }
 
     /**
      * This will display add permission
-     *
+     * @return $this|bool|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function addPermission()
     {
@@ -440,6 +454,7 @@ class AdminController extends Controller
             return $check;
         }
         Permissions::create($request->all());
+        Session::flash('success', 'Permission created successfully.');
         return redirect('admin/permissionsListing');
     }
 
@@ -456,6 +471,7 @@ class AdminController extends Controller
         }
         $permissions = Permissions::find($request->input('pid'));
         $permissions->update($request->all());
+        Session::flash('success', 'Permission changes saved successfully.');
         return redirect('admin/permissionsListing');
     }
 }

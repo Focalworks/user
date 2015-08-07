@@ -6,51 +6,33 @@
 
 if (!function_exists('access_check')) {
 
-    function access_check($permission_name = '')
+    function access_check($permission_name = '', $view = false)
     {
         $current_user = Auth::user();
-
-        if ($current_user->id == 1) {
-            return true; //if admin logged in
-        } else {
-            $permissionMatrix = new Focalworks\Users\PermissionMatrix;
-            $permissions = $permissionMatrix->get_users_all_permissions($current_user->id);
-
-            if (in_array($permission_name, $permissions)) {
+        $permissionObj = new Focalworks\Users\Permissions;
+        //check permission is exist or not in permissions table
+        $permission = $permissionObj->getPermissionByName($permission_name)->first();
+        if ($permission) {
+            //get all roles of current user
+            $user_roles = get_user_roles($current_user->id);
+            //check if current user is superadmin
+            if (in_array(1, $user_roles)) {
                 return true;
+            } else {
+                $permissionMatrix = new Focalworks\Users\PermissionMatrix;
+                $permission_access = $permissionMatrix->check_permission_access($permission->pid, $user_roles);
+                if ($permission_access) {
+                    return true;
+                }
             }
+        }
+        if ($view) {
+            return false;
         }
         return redirect('users/access_denied');
     }
 }
 
-/**
- * This is a helper function to check whether current user have access to function or not
- * function specifically for views
- *
- */
-
-if (!function_exists('view_access_check')) {
-
-    function view_access_check($permission_name = '')
-    {
-        $current_user = Auth::user();
-        $user_roles = get_user_roles($current_user->id);
-
-        if (in_array(1, $user_roles)) {
-            return true; //if admin logged in
-        } else {
-            $permissionMatrix = new Focalworks\Users\PermissionMatrix;
-            $permissions = $permissionMatrix->get_users_all_permissions($current_user->id);
-
-            if (in_array($permission_name, $permissions)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
 
 /**
  * This is a helper function to get current user all roles
