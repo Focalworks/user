@@ -77,7 +77,6 @@ class UsersController extends Controller
             ->with('layout', $this->layout);
     }
 
-
     /**
      * Validate and save the user data to create a new user.
      *
@@ -301,11 +300,7 @@ class UsersController extends Controller
      */
     public function myProfile()
     {
-        $check = access_check('myprofile');
-
-        if ($check !== true) {
-            return $check;
-        }
+        access_check('myprofile');
 
         $current_user_roles = User::find(Auth::user()->id)->user_roles()->get();
 
@@ -336,10 +331,7 @@ class UsersController extends Controller
      */
     public function changePassword()
     {
-        $check = access_check('change_password');
-        if ($check !== true) {
-            return $check;
-        }
+        access_check('change_password');
 
         return view('users::user.change-password')
             ->with('layout', $this->layout);
@@ -354,10 +346,8 @@ class UsersController extends Controller
      */
     public function saveNewPassword(Request $request)
     {
-        $check = access_check('change_password');
-        if ($check !== true) {
-            return $check;
-        }
+        access_check('change_password');
+
         $fields = array(
             'current_password' => Input::get('current_password'),
             'password' => Input::get('password'),
@@ -393,10 +383,7 @@ class UsersController extends Controller
 
     public function editProfile()
     {
-        $check = access_check('edit_profile');
-        if ($check !== true) {
-            return $check;
-        }
+        access_check('edit_profile');
 
         return view('users::user.edit-profile')
             ->with('user', Auth::user())
@@ -411,10 +398,8 @@ class UsersController extends Controller
      */
     public function saveUserProfile(Request $request)
     {
-        $check = access_check('edit_profile');
-        if ($check !== true) {
-            return $check;
-        }
+        access_check('edit_profile');
+
         if (!empty($request->input('name'))) {
             $user = User::find(Auth::user()->id);
             $user->name = $request->input('name');

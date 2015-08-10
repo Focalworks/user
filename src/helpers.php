@@ -4,6 +4,7 @@
  *
  */
 
+
 if (!function_exists('access_check')) {
 
     function access_check($permission_name = '', $view = false)
@@ -29,7 +30,9 @@ if (!function_exists('access_check')) {
         if ($view) {
             return false;
         }
-        return redirect('users/access_denied');
+//        return redirect('users/access_denied');
+        header('Location:' . url('users/access_denied'));
+        die;
     }
 }
 
