@@ -19,6 +19,11 @@ class PermissionsTableSeeder extends Seeder
             'group' => 'User'
         ]);
         \Focalworks\Users\Permissions::create([
+            'name' => 'add_user',
+            'display_name' => 'Add New User',
+            'group' => 'User'
+        ]);
+        \Focalworks\Users\Permissions::create([
             'name' => 'edit_user',
             'display_name' => 'Edit User Profile',
             'group' => 'User'
@@ -50,7 +55,12 @@ class PermissionsTableSeeder extends Seeder
         ]);
         \Focalworks\Users\Permissions::create([
             'name' => 'permission_matrix',
-            'display_name' => 'Permission Matrix',
+            'display_name' => 'Edit Permission Matrix',
+            'group' => 'Permission'
+        ]);
+        \Focalworks\Users\Permissions::create([
+            'name' => 'view_permission_matrix',
+            'display_name' => 'View Permission Matrix',
             'group' => 'Permission'
         ]);
         \Focalworks\Users\Permissions::create([

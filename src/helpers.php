@@ -64,10 +64,14 @@ if (!function_exists('get_user_roles')) {
 
 if (!function_exists('is_admin')) {
 
-    function is_admin()
+    function is_admin($id = 0)
     {
         $user = new Focalworks\Users\User;
         $current_user = Auth::user();
+        if ($id > 0) {
+            $current_user = $user::find($id);
+        }
+
         $user_roles = get_user_roles($current_user->id);
         if (in_array(1, $user_roles)) {
             return true; //if admin logged in

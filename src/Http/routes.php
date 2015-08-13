@@ -27,6 +27,8 @@ Route::get('users/logout', 'Focalworks\Users\Http\Controllers\UsersController@lo
 Route::get('users/access_denied', 'Focalworks\Users\Http\Controllers\UsersController@access_denied');
 
 Route::get('admin/userListing', 'Focalworks\Users\Http\Controllers\AdminController@userListing');
+Route::get('admin/addUser', 'Focalworks\Users\Http\Controllers\AdminController@addUser');
+Route::post('admin/saveNewUser', 'Focalworks\Users\Http\Controllers\AdminController@saveNewUser');
 Route::get('admin/editUser/{id}', 'Focalworks\Users\Http\Controllers\AdminController@editUser');
 Route::get('admin/changeUserPassword/{id}', 'Focalworks\Users\Http\Controllers\AdminController@changeUserPassword');
 Route::get('admin/deleteUser/{id}', 'Focalworks\Users\Http\Controllers\AdminController@deleteUser');

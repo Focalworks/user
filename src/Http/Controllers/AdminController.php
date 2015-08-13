@@ -5,6 +5,7 @@ namespace Focalworks\Users\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Focalworks\Users\Http\Requests\CreatePermissionRequest;
 use Focalworks\Users\Http\Requests\CreateRoleRequest;
+use Focalworks\Users\Http\Requests\CreateUserRequest;
 use Focalworks\Users\PermissionMatrix;
 use Focalworks\Users\Permissions;
 use Focalworks\Users\RolePermissions;
@@ -49,15 +50,58 @@ class AdminController extends Controller
         access_check('user_listing');
 
         // DB::enableQueryLog();
-        $users = User::whereNotIn('id', function ($query) {
+        /*$users = User::whereNotIn('id', function ($query) {
             $query->select('uid')
                 ->from('user_roles')
                 ->where('rid', 1);
-        })->get();
+        })->get();*/
+        $users = User::all();
         //print_r(DB::getQueryLog());
         return view('users::admin.user_listing')
             ->with('users', $users)
             ->with('layout', $this->layout);
+    }
+
+    /**
+     * add new user
+     * @return $this
+     */
+    public function addUser()
+    {
+        access_check('add_user');
+        return view('users::admin.add_user')
+            ->with('layout', $this->layout);
+    }
+
+    /**
+     * save new user
+     * @param CreateUserRequest $request
+     * @return mixed
+     */
+    public function saveNewUser(CreateUserRequest $request)
+    {
+        access_check('add_user');
+
+        //create new user and save into users table
+        $user_arr = array(
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password'))
+        );
+        $user = User::create($user_arr);
+
+        if (!$user) {
+            //if registration fails
+            Session::flash('error', 'User not created..please try again later');
+            return Redirect::to('admin/addUser');
+        } else {
+            UserRoles::create(array('uid' => $user->id, 'rid' => 2));
+        }
+
+        // successful registration
+        Session::flash('success', 'Successfully user created');
+        return Redirect::to('admin/userListing');
+
     }
 
     /** This is function to edit users profile  */
@@ -182,8 +226,8 @@ class AdminController extends Controller
             'password' => Input::get('password'),
             'password_confirmation' => Input::get('password_confirmation')
         );
-        $rules = array('password' => 'required|min:5|confirmed');
-        $validator = Validator::make($fields, $rules);
+
+        $validator = Validator::make($fields, User::$change_user_password_rules);
 
         if ($validator->fails()) {
             // send back to the page with the input data and errors
@@ -206,15 +250,18 @@ class AdminController extends Controller
 
     public function getPermissionMatrix()
     {
-        access_check('permission_matrix');
+        if (access_check('permission_matrix', true) || access_check('view_permission_matrix', true)) {
+            $permissionMatrixObj = new PermissionMatrix();
+            $permissionMatrix = $permissionMatrixObj->get_all_permisssions();
+            $all_roles = Roles::all();
+            return view('users::admin.permission-matrix')
+                ->with('permission_matrix', $permissionMatrix)
+                ->with('all_roles', $all_roles)
+                ->with('layout', $this->layout);
+        }
 
-        $permissionMatrixObj = new PermissionMatrix();
-        $permissionMatrix = $permissionMatrixObj->get_all_permisssions();
-        $all_roles = Roles::all();
-        return view('users::admin.permission-matrix')
-            ->with('permission_matrix', $permissionMatrix)
-            ->with('all_roles', $all_roles)
-            ->with('layout', $this->layout);
+        redirect('users/access_denied');
+
     }
 
     /**
@@ -223,7 +270,6 @@ class AdminController extends Controller
     public function savePermissionMatrix(Request $request)
     {
         access_check('permission_matrix');
-
         RolePermissions::truncate();
         $permission_matrix = $request->input('pm');
         if (count($permission_matrix) > 0) {

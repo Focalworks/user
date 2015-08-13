@@ -10,28 +10,28 @@ class RolePermissionsTableSeeder extends Seeder
     {
         \Focalworks\Users\RolePermissions::create([
             'rid' => 2,
-            'pid' => 6,
-        ]);
-        \Focalworks\Users\RolePermissions::create([
-            'rid' => 2,
             'pid' => 7,
         ]);
         \Focalworks\Users\RolePermissions::create([
             'rid' => 2,
             'pid' => 8,
+        ]);
+        \Focalworks\Users\RolePermissions::create([
+            'rid' => 2,
+            'pid' => 9,
         ]);
 
         \Focalworks\Users\RolePermissions::create([
             'rid' => 3,
-            'pid' => 6,
-        ]);
-        \Focalworks\Users\RolePermissions::create([
-            'rid' => 3,
             'pid' => 7,
         ]);
         \Focalworks\Users\RolePermissions::create([
             'rid' => 3,
             'pid' => 8,
+        ]);
+        \Focalworks\Users\RolePermissions::create([
+            'rid' => 3,
+            'pid' => 9,
         ]);
     }
 

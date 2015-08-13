@@ -13,8 +13,10 @@
             @include('users::errors.error-block')
 
             @if ($permission_matrix)
-                <form action="{{ url('admin/permissionMatrix')  }}" method="POST" class="form-horizontal">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                @if(access_check('permission_matrix',true))
+                    <form action="{{ url('admin/permissionMatrix')  }}" method="POST" class="form-horizontal">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                @endif
                     <table id="pmtbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -39,9 +41,9 @@
                                                 @if($rid == 1)
                                                     <td><input type="checkbox" name="pm[]" value="{{ $pid.'_'.$rid }}" checked disabled/></td>
                                                 @elseif ($roles['access'] == 1)
-                                                    <td><input type="checkbox" name="pm[]" value="{{ $pid.'_'.$rid }}" checked/></td>
+                                                    <td><input type="checkbox" name="pm[]" value="{{ $pid.'_'.$rid }}" checked @if(!access_check('permission_matrix',true)) disabled @endif /></td>
                                                 @else
-                                                    <td><input type="checkbox" name="pm[]" value="{{ $pid.'_'.$rid }}"/></td>
+                                                    <td><input type="checkbox" name="pm[]" value="{{ $pid.'_'.$rid }}" @if(!access_check('permission_matrix',true)) disabled @endif /></td>
                                                 @endif
                                             @endforeach
                                         </tr>
@@ -51,7 +53,9 @@
                         </tbody>
                     </table>
                     <hr/>
-                    <button class="btn btn-primary">Save</button>
+                    @if(access_check('permission_matrix',true))
+                        <button class="btn btn-primary">Save</button>
+                    @endif
                 </form>
             @endif
         </div>

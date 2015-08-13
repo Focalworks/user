@@ -3,6 +3,7 @@
 namespace Focalworks\Users\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Focalworks\Users\Http\Requests\CreateUserRequest;
 use Focalworks\Users\User;
 use Focalworks\Users\UserRoles;
 use Illuminate\Http\Request;
@@ -83,38 +84,22 @@ class UsersController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function doRegister(Request $request)
+    public function doRegister(CreateUserRequest $request)
     {
-        $fields = array(
-            'name' => Input::get('name'),
-            'email' => Input::get('email'),
-            'password' => Input::get('password'),
-            'password_confirmation' => Input::get('password_confirmation')
+        //create new user and save into users table
+        $user_arr = array(
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password'))
         );
+        $user = User::create($user_arr);
 
-        // doing the validation, passing post data, rules and the messages
-        $validator = Validator::make($fields, User::$registration_rules);
-
-        if ($validator->fails()) {
-            // send back to the page with the input data and errors
-            return Redirect::to('users/register')->withInput()->withErrors($validator);
+        if (!$user) {
+            //if registration fails
+            Session::flash('error', 'Registration failed..please try again later');
+            return Redirect::to('users/register');
         } else {
-            //create new user and save into users table
-            $user_arr = array(
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('password'))
-            );
-            $user = User::create($user_arr);
-
-            if (!$user) {
-                //if registration fails
-                Session::flash('error', 'Registration failed..please try again later');
-                return Redirect::to('users/register');
-            } else {
-                UserRoles::create(array('uid' => $user->id, 'rid' => 2));
-            }
-
+            UserRoles::create(array('uid' => $user->id, 'rid' => 2));
         }
         // successful registration
         Session::flash('success', 'You have registered successfully');
@@ -208,8 +193,7 @@ class UsersController extends Controller
             'password' => Input::get('password'),
             'password_confirmation' => Input::get('password_confirmation')
         );
-        $rules = array('password' => 'required|min:5|confirmed');
-        $validator = Validator::make($fields, $rules);
+        $validator = Validator::make($fields, User::$change_user_password_rules);
 
         if ($validator->fails()) {
             // send back to the page with the input data and errors

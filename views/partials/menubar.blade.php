@@ -4,7 +4,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('users/dashboard')  }}" class="btn btn-link">Dashboard</a></li>
 
-                @if(access_check('role_listing',true) || access_check('user_listing',true) || access_check('permission_matrix',true) || access_check('permission_listing',true))
+                @if(access_check('role_listing',true) || access_check('user_listing',true) || access_check('permission_matrix',true) || access_check('view_permission_matrix',true) || access_check('permission_listing',true))
                     <li class="dropdown">
                         <a href="#" id="navDropAdmin" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-haspopup="true" aria-expanded="false">Admin Functions<span class="caret"></span></a>
@@ -18,7 +18,7 @@
                             @if(access_check('permission_listing',true))
                                 <li><a href="{{ url('admin/permissionsListing')}}" class="btn btn-link">Permissions</a></li>
                             @endif
-                            @if(access_check('permission_matrix',true))
+                            @if(access_check('permission_matrix',true) || access_check('view_permission_matrix',true))
                                 <li class=""><a href="{{ url('admin/permissionMatrix')  }}" class="btn btn-link">Permission Matrix</a></li>
                             @endif
                         </ul>

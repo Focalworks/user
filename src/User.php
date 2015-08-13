@@ -30,6 +30,14 @@ class User extends Model
         'password' => 'required|min:5|confirmed'
     );
     /**
+     * Change User Password rules
+     **/
+    public static $change_user_password_rules = array(
+        'password' => 'required|min:5|confirmed'
+    );
+
+
+    /**
      * Forgot Password rules
      **/
     public static $forgot_password_rules = array(
