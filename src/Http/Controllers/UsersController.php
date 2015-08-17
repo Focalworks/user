@@ -284,7 +284,7 @@ class UsersController extends Controller
      */
     public function myProfile()
     {
-        access_check('myprofile');
+        access_check('manage_profile');
 
         $current_user_roles = User::find(Auth::user()->id)->user_roles()->get();
 
@@ -315,7 +315,7 @@ class UsersController extends Controller
      */
     public function changePassword()
     {
-        access_check('change_password');
+        access_check('manage_profile');
 
         return view('users::user.change-password')
             ->with('layout', $this->layout);
@@ -330,7 +330,7 @@ class UsersController extends Controller
      */
     public function saveNewPassword(Request $request)
     {
-        access_check('change_password');
+        access_check('manage_profile');
 
         $fields = array(
             'current_password' => Input::get('current_password'),
@@ -367,7 +367,7 @@ class UsersController extends Controller
 
     public function editProfile()
     {
-        access_check('edit_profile');
+        access_check('manage_profile');
 
         return view('users::user.edit-profile')
             ->with('user', Auth::user())
@@ -382,7 +382,7 @@ class UsersController extends Controller
      */
     public function saveUserProfile(Request $request)
     {
-        access_check('edit_profile');
+        access_check('manage_profile');
 
         if (!empty($request->input('name'))) {
             $user = User::find(Auth::user()->id);

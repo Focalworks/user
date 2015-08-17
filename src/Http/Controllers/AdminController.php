@@ -47,7 +47,7 @@ class AdminController extends Controller
      */
     public function userListing()
     {
-        access_check('user_listing');
+        access_check('manage_users');
 
         // DB::enableQueryLog();
         /*$users = User::whereNotIn('id', function ($query) {
@@ -68,7 +68,7 @@ class AdminController extends Controller
      */
     public function addUser()
     {
-        access_check('add_user');
+        access_check('manage_users');
         return view('users::admin.add_user')
             ->with('layout', $this->layout);
     }
@@ -80,7 +80,7 @@ class AdminController extends Controller
      */
     public function saveNewUser(CreateUserRequest $request)
     {
-        access_check('add_user');
+        access_check('manage_users');
 
         //create new user and save into users table
         $user_arr = array(
@@ -107,7 +107,7 @@ class AdminController extends Controller
     /** This is function to edit users profile  */
     public function editUser($id)
     {
-        access_check('edit_user');
+        access_check('manage_users');
 
         $user = User::find($id);
         $roles = Roles::all();
@@ -133,7 +133,7 @@ class AdminController extends Controller
      */
     public function saveUserProfile(Request $request)
     {
-        access_check('edit_user');
+        access_check('manage_users');
 
         if (!empty($request->input('user_id'))) {
             $user_id = $request->input('user_id');
@@ -197,7 +197,7 @@ class AdminController extends Controller
     /** This is function to change users password by admin  */
     public function changeUserPassword($id)
     {
-        access_check('change_user_password');
+        access_check('manage_users');
 
         $user = User::find($id);
         if ($user) {
@@ -220,7 +220,7 @@ class AdminController extends Controller
      */
     public function saveUserPassword(Request $request)
     {
-        access_check('change_user_password');
+        access_check('manage_users');
 
         $fields = array(
             'password' => Input::get('password'),
@@ -250,15 +250,16 @@ class AdminController extends Controller
 
     public function getPermissionMatrix()
     {
-        if (access_check('permission_matrix', true) || access_check('view_permission_matrix', true)) {
-            $permissionMatrixObj = new PermissionMatrix();
-            $permissionMatrix = $permissionMatrixObj->get_all_permisssions();
-            $all_roles = Roles::all();
-            return view('users::admin.permission-matrix')
-                ->with('permission_matrix', $permissionMatrix)
-                ->with('all_roles', $all_roles)
-                ->with('layout', $this->layout);
-        }
+        access_check('manage_permission_matrix');
+
+        $permissionMatrixObj = new PermissionMatrix();
+        $permissionMatrix = $permissionMatrixObj->get_all_permisssions();
+        $all_roles = Roles::all();
+        return view('users::admin.permission-matrix')
+            ->with('permission_matrix', $permissionMatrix)
+            ->with('all_roles', $all_roles)
+            ->with('layout', $this->layout);
+
 
         redirect('users/access_denied');
 
@@ -269,7 +270,8 @@ class AdminController extends Controller
      */
     public function savePermissionMatrix(Request $request)
     {
-        access_check('permission_matrix');
+        access_check('manage_permission_matrix');
+
         RolePermissions::truncate();
         $permission_matrix = $request->input('pm');
         if (count($permission_matrix) > 0) {
@@ -288,7 +290,7 @@ class AdminController extends Controller
      */
     public function role_listing()
     {
-        access_check('role_listing');
+        access_check('manage_roles');
 
         $roles = Roles::all();
         return view('users::admin.role_listing')
@@ -302,7 +304,7 @@ class AdminController extends Controller
      **/
     public function editRole($id)
     {
-        access_check('edit_role');
+        access_check('manage_roles');
 
         $role = Roles::GetByRoleID($id)->first();
         if ($role) {
@@ -323,11 +325,8 @@ class AdminController extends Controller
     public function saveRole(CreateRoleRequest $request)
     {
         $role_id = $request->input('rid');
-        if ($role_id) {
-            access_check('edit_role');
-        } else {
-            access_check('add_role');
-        }
+        access_check('manage_roles');
+
         if ($role_id) {
             $role = Roles::GetByRoleID($role_id)->first();
             // change password and send back
@@ -368,7 +367,7 @@ class AdminController extends Controller
      */
     public function addRole()
     {
-        access_check('add_role');
+        access_check('manage_roles');
 
         return view('users::admin.add-role')
             ->with('layout', $this->layout);
@@ -380,7 +379,7 @@ class AdminController extends Controller
      */
     public function permissionsListing()
     {
-        access_check('permission_listing');
+        access_check('manage_permissions');
 
         $permissions = Permissions::all();
         return view('users::admin.permissions-listing')
@@ -413,7 +412,7 @@ class AdminController extends Controller
      */
     public function addPermission()
     {
-        access_check('add_permission');
+        access_check('manage_permissions');
 
         $permissions = Permissions::all();
         return view('users::admin.add-permission')
@@ -426,7 +425,7 @@ class AdminController extends Controller
      */
     public function editPermission($id)
     {
-        access_check('edit_permission');
+        access_check('manage_permissions');
 
         $permission = Permissions::find($id);
         return view('users::admin.edit-permission')
@@ -441,7 +440,7 @@ class AdminController extends Controller
      */
     public function savePermission(CreatePermissionRequest $request)
     {
-        access_check('add_permission');
+        access_check('manage_permissions');
 
         Permissions::create($request->all());
         Session::flash('success', 'Permission created successfully.');
@@ -455,7 +454,7 @@ class AdminController extends Controller
      */
     public function updatePermission(CreatePermissionRequest $request)
     {
-        access_check('edit_permission');
+        access_check('manage_permissions');
 
         $permissions = Permissions::find($request->input('pid'));
         $permissions->update($request->all());

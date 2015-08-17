@@ -10,7 +10,7 @@
             <h2>Users List</h2>
             <br/>
 
-            @if(access_check('add_user',true)) <div class="pull-right"><a href="{{ url('admin/addUser/') }}" class="btn btn-link" title="Edit User"><span class="glyphicon glyphicon-plus"></span> Add New User</a></div> @endif
+            <div class="pull-right"><a href="{{ url('admin/addUser/') }}" class="btn btn-link" title="Edit User"><span class="glyphicon glyphicon-plus"></span> Add New User</a></div>
             @include('users::errors.error-block')
 
             <table id="usertbl" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -49,14 +49,11 @@
                                     ?>
 
                                     @if($show_actions == 1)
-                                        @if(access_check('edit_user',true))
-                                            <a href="{{ url('admin/editUser/'.$user->id)  }}" class="btn btn-link"
+                                        <a href="{{ url('admin/editUser/'.$user->id)  }}" class="btn btn-link"
                                                title="Edit User"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        @endif
-                                        @if(access_check('change_user_password',true))
-                                            <a href="{{ url('admin/changeUserPassword/'.$user->id)  }}" class="btn btn-link"
+                                        <a href="{{ url('admin/changeUserPassword/'.$user->id)  }}" class="btn btn-link"
                                                title="Change User Password"><span class="glyphicon glyphicon-cog"></span></a>
-                                        @endif
+
                                         @if(access_check('delete_user',true))
                                             <a href="{{ url('admin/deleteUser/'.$user->id)  }}" class="btn btn-link"
                                            title="Delete User"

@@ -4,21 +4,21 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('users/dashboard')  }}" class="btn btn-link">Dashboard</a></li>
 
-                @if(access_check('role_listing',true) || access_check('user_listing',true) || access_check('permission_matrix',true) || access_check('view_permission_matrix',true) || access_check('permission_listing',true))
+                @if(access_check('manage_users',true) || access_check('manage_permisssion_matrix',true) || access_check('manage_permisssions',true) || access_check('manage_roles',true))
                     <li class="dropdown">
                         <a href="#" id="navDropAdmin" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-haspopup="true" aria-expanded="false">Admin Functions<span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDrop1">
-                            @if(access_check('user_listing',true))
+                            @if(access_check('manage_users',true))
                                 <li><a href="{{ url('admin/userListing') }}" class="btn btn-link">All Users</a></li>
                             @endif
-                            @if(access_check('role_listing',true))
+                            @if(access_check('manage_roles',true))
                                 <li><a href="{{ url('admin/roleListing') }}" class="btn btn-link">All Roles</a></li>
                             @endif
-                            @if(access_check('permission_listing',true))
+                            @if(access_check('manage_permisssions',true))
                                 <li><a href="{{ url('admin/permissionsListing')}}" class="btn btn-link">Permissions</a></li>
                             @endif
-                            @if(access_check('permission_matrix',true) || access_check('view_permission_matrix',true))
+                            @if(access_check('manage_permission_matrix',true))
                                 <li class=""><a href="{{ url('admin/permissionMatrix')  }}" class="btn btn-link">Permission Matrix</a></li>
                             @endif
                         </ul>
@@ -33,13 +33,9 @@
                         <p class="text-info"><span class="glyphicon glyphicon-user"></span>
                             Welcome {!! ucfirst(Auth::user()->name) !!} <span class="caret"></span></p></a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDrop1">
-                     @if(access_check('myprofile',true))
+                     @if(access_check('manage_profile',true))
                         <li><a href="{{ url('users/myprofile')  }}" class="btn btn-link">My Profile</a></li>
-                     @endif
-                     @if(access_check('edit_profile',true))
                         <li><a href="{{ url('users/editProfile')  }}" class="btn btn-link">Edit Profile</a></li>
-                     @endif
-                     @if(access_check('change_password',true))
                         <li><a href="{{ url('users/changePassword')  }}" class="btn btn-link">Change Password</a>
                         </li>
                      @endif
