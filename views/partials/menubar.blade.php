@@ -4,7 +4,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('users/dashboard')  }}" class="btn btn-link">Dashboard</a></li>
 
-                @if(access_check('manage_users',true) || access_check('manage_permisssion_matrix',true) || access_check('manage_permisssions',true) || access_check('manage_roles',true))
+                @if(access_check('manage_users',true) || access_check('manage_permisssion_matrix',true) || access_check('manage_permissions',true) || access_check('manage_roles',true))
                     <li class="dropdown">
                         <a href="#" id="navDropAdmin" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-haspopup="true" aria-expanded="false">Admin Functions<span class="caret"></span></a>
@@ -15,7 +15,7 @@
                             @if(access_check('manage_roles',true))
                                 <li><a href="{{ url('admin/roleListing') }}" class="btn btn-link">All Roles</a></li>
                             @endif
-                            @if(access_check('manage_permisssions',true))
+                            @if(access_check('manage_permissions',true))
                                 <li><a href="{{ url('admin/permissionsListing')}}" class="btn btn-link">Permissions</a></li>
                             @endif
                             @if(access_check('manage_permission_matrix',true))
