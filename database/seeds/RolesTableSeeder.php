@@ -12,10 +12,10 @@ class RolesTableSeeder extends Seeder
             'role' => 'Superadmin'
         ]);
         \Focalworks\Users\Roles::create([
-            'role' => 'user'
+            'role' => 'User'
         ]);
         \Focalworks\Users\Roles::create([
-            'role' => 'editor'
+            'role' => 'Editor'
         ]);
 
     }

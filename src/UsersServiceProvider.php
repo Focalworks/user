@@ -37,9 +37,11 @@ class UsersServiceProvider extends ServiceProvider
 
             __DIR__ . '/../database/seeds/UsersTableSeeder.php' => base_path('database/seeds/UsersTableSeeder.php'),
             __DIR__ . '/../database/seeds/RolesTableSeeder.php' => base_path('database/seeds/RolesTableSeeder.php'),
-            __DIR__ . '/../database/seeds/UserRolesTableSeeder.php' => base_path('database/seeds/UserRolesTableSeeder.php'),
             __DIR__ . '/../database/seeds/PermissionsTableSeeder.php' => base_path('database/seeds/PermissionsTableSeeder.php'),
-            __DIR__ . '/../database/seeds/RolePermissionsTableSeeder.php' => base_path('database/seeds/RolePermissionsTableSeeder.php')
+            __DIR__ . '/../database/seeds/RolePermissionsTableSeeder.php' => base_path('database/seeds/RolePermissionsTableSeeder.php'),
+            //copy menubar template into views
+
+            __DIR__ . '/../views/partials/menubar.blade.php' => base_path('resources/views/menubar.blade.php'),
         ]);
     }
 }

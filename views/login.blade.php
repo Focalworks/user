@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-7 col-md-push-2" role="main">
+        <div class="col-md-7 col-md-push-2 well" role="main">
          <h2>Login</h2>
                 <br/>
             @include('users::errors.error-block')

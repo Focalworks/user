@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-7 col-md-push-2" role="main">
+        <div class="col-md-7 col-md-push-2 well" role="main">
          <h2>Forgot Password</h2>
                 <br/>
                 <p>We will email you instructions on how to reset your password.</p>

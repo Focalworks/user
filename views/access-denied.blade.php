@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-7 col-md-push-2" role="main">
+        <div class="col-md-7 col-md-push-2 " role="main">
              <h2>Access Denied</h2>
                     <br/>
              @if(Auth::check())

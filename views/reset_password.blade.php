@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10 col-md-push-1" role="main">
+        <div class="col-md-10 col-md-push-1 well" role="main">
 
             <h2>Reset Password : {!! $user->name !!}</h2>
             <br/>
