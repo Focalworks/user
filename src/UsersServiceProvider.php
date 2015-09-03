@@ -2,6 +2,7 @@
 
 namespace Focalworks\Users;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class UsersServiceProvider extends ServiceProvider
@@ -19,6 +20,10 @@ class UsersServiceProvider extends ServiceProvider
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/Http/routes.php';
         }
+
+        Auth::extend('eloquent', function ($app) {
+            return new CustomEloquentUserProvider($app['hash'], $app['config']['auth.model']);
+        });
 
         // define the path to views
         $this->loadViewsFrom(__DIR__ . '/../views', 'users');

@@ -4,29 +4,25 @@
  *
  */
 
-
 if (!function_exists('access_check')) {
 
-    function access_check($permission_name = '', $view = false)
+    function access_check($permission, $view = false)
     {
         $current_user = Auth::user();
-        $permissionObj = new Focalworks\Users\Permissions;
-        //check permission is exist or not in permissions table
-        $permission = $permissionObj->getPermissionByName($permission_name)->first();
-        if ($permission) {
-            //get all roles of current user
-            $user_roles = get_user_roles($current_user->id);
-            //check if current user is superadmin
-            if (in_array(1, $user_roles)) {
+        $user_roles_id = array_keys($current_user->roles);
+        if (in_array(1, $user_roles_id)) {
+            return true;
+        } elseif (is_array($permission)) {
+            $allowed_permission = array_intersect($permission, $current_user->permissions);
+            if (array_count_values($permission) == array_count_values($allowed_permission)) {
                 return true;
-            } else {
-                $permissionMatrix = new Focalworks\Users\PermissionMatrix;
-                $permission_access = $permissionMatrix->check_permission_access($permission->pid, $user_roles);
-                if ($permission_access) {
-                    return true;
-                }
+            }
+        } else {
+            if (in_array($permission, $current_user->permissions)) {
+                return true;
             }
         }
+
         if ($view) {
             return false;
         }
@@ -35,7 +31,6 @@ if (!function_exists('access_check')) {
         die;
     }
 }
-
 
 /**
  * This is a helper function to get current user all roles
@@ -76,6 +71,7 @@ if (!function_exists('is_admin')) {
         if (in_array(1, $user_roles)) {
             return true; //if admin logged in
         }
+
         return false;
     }
 }

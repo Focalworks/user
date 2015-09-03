@@ -36,7 +36,7 @@
                                 @if(in_array(1,$user_roles))
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="roles[]" value="{{$aRole->rid}}">  {{$aRole->role}}
+                                            <input type="checkbox" name="roles[]" value="{{$aRole->rid}}" @if(in_array($aRole->rid,$user_roles))checked="checked"@endif >  {{$aRole->role}}
                                         </label>
                                     </div>
                                 @endif

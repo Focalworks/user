@@ -24,8 +24,8 @@
                 <tr>
                     <th>Roles</th>
                     <td>
-                        @foreach ($user_roles as $user_role)
-                            <p> {!! $user_role->roles->role !!}</p>
+                        @foreach ($user->roles as $user_role)
+                            <p> {!! $user_role !!}</p>
                         @endforeach
                     </td>
                 </tr>
